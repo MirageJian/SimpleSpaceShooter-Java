@@ -53,9 +53,7 @@ public class GameObject {
 
     public void setCentre(Point3f centre) {
         this.centre = centre;
-
         //make sure to put boundaries on the gameObject
-
     }
 
     public int getWidth() {
@@ -72,7 +70,6 @@ public class GameObject {
         }
         return GameResource.sBlankTexture.imageTexture;
     }
-
 }
 
 /*

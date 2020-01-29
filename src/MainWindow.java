@@ -45,6 +45,7 @@ public class MainWindow {
     private static JFrame frame = new JFrame("Game");   // Change to the name of your game
     private static Model gameWorld = new Model();
     private static Viewer canvas = new Viewer(gameWorld);
+    private static GameLogic gameLogic = new GameLogic(gameWorld);
     private KeyListener Controller = new Controller();
     // private static int TargetFPS = 60;
     private static boolean startGame = false;
@@ -117,7 +118,7 @@ public class MainWindow {
         // So no need to call it explicitly
 
         // model update
-        gameWorld.gamelogic();
+        gameLogic.doLogic();
         // view update
 
         canvas.updateview();

@@ -76,6 +76,8 @@ public class Viewer extends JPanel {
         //Draw background
         drawBackground(g);
 
+        drawLaser(x, y, g);
+
         //Draw player
         drawPlayer(x, y, width, height, texture, g);
 
@@ -113,13 +115,24 @@ public class Viewer extends JPanel {
         }
     }
 
+    private void drawLaser(int x, int y, Graphics g) {
+        try {
+            final int drawWidth = 100; // px
+            final int drawHeight = 600; // px
+            int current = CurrentAnimationTime % 12 * drawWidth;
+            g.drawImage(gameWorld.laserResource.imageTexture, x , y - 770, x + 25, y + 30, current, 0, drawWidth + current, drawHeight, null);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 
     private void drawPlayer(int x, int y, int width, int height, Image texture, Graphics g) {
         try {
             //The spirte is 32x32 pixel wide and 4 of them are placed together so we need to grab a different one each time
             //remember your training :-) computer science everything starts at 0 so 32 pixels gets us to 31
-            int currentPositionInAnimation = CurrentAnimationTime % 40 / 10 * 32; //slows down animation so every 10 frames we get another frame so every 100ms
-            g.drawImage(texture, x, y, x + width, y + width, currentPositionInAnimation, 0, currentPositionInAnimation + 31, 32, null);
+            int currentPositionInAnimation = CurrentAnimationTime % 6 * 125; //slows down animation so every 10 frames we get another frame so every 100ms
+            g.drawImage(texture, x, y, x + width, y + width, currentPositionInAnimation, 0, currentPositionInAnimation + 124, 160, null);
 
         } catch (Exception e) {
             // TODO Auto-generated catch block
