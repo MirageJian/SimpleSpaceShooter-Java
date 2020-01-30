@@ -1,6 +1,7 @@
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import gameObjects.EnemyObject;
+import gameObjects.PlayerObject;
 import gameObjects.WeaponObject;
 import util.*;
 
@@ -31,11 +32,11 @@ SOFTWARE.
 public class Model {
     private int Score = 0;
     // Game Objects
-    private GameObject Player;
+    private PlayerObject Player;
     private Controller controller = Controller.getInstance();
     private CopyOnWriteArrayList<EnemyObject> EnemiesList = new CopyOnWriteArrayList<>();
     private CopyOnWriteArrayList<GameObject> BulletList = new CopyOnWriteArrayList<>();
-    public GameObject laser;
+    public WeaponObject laser;
     // Game Resources
     public GameResource lightingResource;
     public GameResource ufoResource;
@@ -49,7 +50,8 @@ public class Model {
         backgroundResource = new GameResource("res/BG_1080_3838.png");
         //Player
         lightingResource = new GameResource("res/player_750_160.png");
-        Player = new GameObject(lightingResource, 50, 50, new Point3f(500, 500, 0));
+        Point3f playerCentre = new Point3f(500, 500, 0);
+        Player = new PlayerObject(lightingResource, 50, 50, playerCentre);
         //Enemies  starting with four
         ufoResource = new GameResource("res/UFO.png");
         EnemiesList.add(new EnemyObject(ufoResource, 50, 50, new Point3f(((float) Math.random() * 50 + 400), 0, 0)));
@@ -58,13 +60,13 @@ public class Model {
         EnemiesList.add(new EnemyObject(ufoResource, 50, 50, new Point3f(((float) Math.random() * 100 + 400), 0, 0)));
         // Bullets
         bulletResource = new GameResource("res/Bullet.png");
-        // Laser
+        // Laser has the same centre as player
         laserResource = new GameResource("res/texture_laser_1200_600.png", 100, 600);
-        laser = new WeaponObject(laserResource, 50, 800, new Point3f(0, 0, 0));
-
+        laser = new WeaponObject(laserResource, 20, 800, new Point3f(0,0,0));
+        laser.setCentre(playerCentre);
     }
 
-    public GameObject getPlayer() {
+    public PlayerObject getPlayer() {
         return Player;
     }
 

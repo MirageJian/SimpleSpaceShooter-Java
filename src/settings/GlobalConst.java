@@ -1,4 +1,6 @@
-package util;
+package settings;
+
+import util.Vector3f;
 
 public class GlobalConst {
     public static final int TARGET_FRAME = 60;

@@ -16,4 +16,7 @@ public class EnemyObject extends GameObject {
     public void setHealth(int health) {
         this.health = health;
     }
+    public boolean isDead() {
+        return health < 1;
+    }
 }

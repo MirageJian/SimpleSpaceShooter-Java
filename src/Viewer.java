@@ -1,3 +1,5 @@
+import util.GameResource;
+
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.LayoutManager;
@@ -97,7 +99,8 @@ public class Viewer extends JPanel {
         //The spirte is 32x32 pixel wide and 4 of them are placed together so we need to grab a different one each time
         //remember your training :-) computer science everything starts at 0 so 32 pixels gets us to 31
         int currentPositionInAnimation = CurrentAnimationTime % 40 / 10 * 32; //slows down animation so every 10 frames we get another frame so every 100ms
-        g.drawImage(myImage, x, y, x + width, y + width, currentPositionInAnimation, 0, currentPositionInAnimation + 31, 32, null);
+        g.drawImage(myImage, x-width/2, y-height/2, x + width/2, y + height/2,
+                currentPositionInAnimation, 0, currentPositionInAnimation + 31, 32, null);
     }
 
     private void drawBackground(Graphics g) {
@@ -116,13 +119,13 @@ public class Viewer extends JPanel {
     }
 
     private void drawLaser(int x, int y, Graphics g) {
+        GameResource resource = gameWorld.laser.resource;
+        int current = CurrentAnimationTime % 12 * resource.drawWidth;
         try {
-            final int drawWidth = 100; // px
-            final int drawHeight = 600; // px
-            int current = CurrentAnimationTime % 12 * drawWidth;
-            g.drawImage(gameWorld.laserResource.imageTexture, x , y - 770, x + 25, y + 30, current, 0, drawWidth + current, drawHeight, null);
+            g.drawImage(gameWorld.laserResource.imageTexture,
+                    x - gameWorld.laser.getWidth()/2 , y - gameWorld.laser.getHeight(), x + gameWorld.laser.getWidth()/2, y,
+                    current, 0, resource.drawWidth + current, resource.drawHeight, null);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -132,10 +135,9 @@ public class Viewer extends JPanel {
             //The spirte is 32x32 pixel wide and 4 of them are placed together so we need to grab a different one each time
             //remember your training :-) computer science everything starts at 0 so 32 pixels gets us to 31
             int currentPositionInAnimation = CurrentAnimationTime % 6 * 125; //slows down animation so every 10 frames we get another frame so every 100ms
-            g.drawImage(texture, x, y, x + width, y + width, currentPositionInAnimation, 0, currentPositionInAnimation + 124, 160, null);
+            g.drawImage(texture, x-width/2, y-height/2, x + width/2, y + height/2, currentPositionInAnimation, 0, currentPositionInAnimation + 124, 160, null);
 
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 

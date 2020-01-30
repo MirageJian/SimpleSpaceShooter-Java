@@ -12,7 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import util.GlobalConst;
+import settings.GlobalConst;
 import util.UnitTests;
 
 /*

@@ -26,25 +26,25 @@ SOFTWARE.
    
    (MIT LICENSE ) e.g do what you want with this :-) 
  */
-public class GameObject {
+public abstract class GameObject {
 
     private Point3f centre = new Point3f(0, 0, 0);            // Centre of object, using 3D as objects may be scaled
     private int width = 10;
     private int height = 10;
     private boolean hasTextured = false;
-    private GameResource gameResource;
+    public GameResource resource;
     public int textureCount = 0;
 
     public GameObject() {
 
     }
 
-    public GameObject(GameResource gameResource, int width, int height, Point3f centre) {
+    public GameObject(GameResource resource, int width, int height, Point3f centre) {
         hasTextured = true;
-        this.gameResource = gameResource;
+        this.resource = resource;
         this.width = width;
         this.height = height;
-        this.centre = centre;
+        this.centre = normalizedCentre(width, height, centre);
     }
 
     public Point3f getCentre() {
@@ -66,9 +66,21 @@ public class GameObject {
 
     public Image getTexture() {
         if (hasTextured) {
-            return gameResource.imageTexture;
+            return resource.imageTexture;
         }
         return GameResource.sBlankTexture.imageTexture;
+    }
+    // Return normalised centred object
+    private Point3f normalizedCentre(int width, int height, Point3f centre) {
+        centre.setX(centre.getX() + width / 2f);
+        centre.setY(centre.getY() + height / 2f);
+        return centre;
+    }
+    public Point3f getTopLeft() {
+        return new Point3f(centre.getX() - width / 2f, centre.getY() - height / 2f, 0);
+    }
+    public Point3f getBottomRight() {
+        return new Point3f(centre.getX() + width / 2f, centre.getY() + height / 2f, 0);
     }
 }
 

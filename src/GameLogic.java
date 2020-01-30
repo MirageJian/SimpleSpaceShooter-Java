@@ -1,6 +1,8 @@
 import gameObjects.EnemyObject;
+import gameObjects.WeaponObject;
+import settings.WeaponTypes;
 import util.GameObject;
-import util.GlobalConst;
+import settings.GlobalConst;
 import util.Point3f;
 
 public class GameLogic {
@@ -32,6 +34,15 @@ public class GameLogic {
                         && Math.abs(temp.getCentre().getY() - Bullet.getCentre().getY()) < temp.getHeight()) {
                     world.getEnemies().remove(temp);
                     world.getBullets().remove(Bullet);
+                    world.addScore(temp);
+                }
+            }
+            // Laser logic
+            if (Math.abs(temp.getCentre().getX() - world.laser.getCentre().getX()) < world.laser.getWidth()
+                    && Math.abs(temp.getCentre().getY() - world.laser.getCentre().getY()) < world.laser.getHeight()) {
+                temp.health -= world.laser.damage;
+                if (temp.isDead()) {
+                    world.getEnemies().remove(temp);
                     world.addScore(temp);
                 }
             }
@@ -75,7 +86,7 @@ public class GameLogic {
 
     private void playerLogic() {
         // smoother animation is possible if we make a target position  // done but may try to change things for students
-        //check for movement and if you fired a bullet
+        // check for movement and if you fired a bullet
         if (Controller.getInstance().isKeyAPressed()) {
             world.getPlayer().getCentre().ApplyVector(GlobalConst.sFighterAMov);
         }
@@ -88,12 +99,21 @@ public class GameLogic {
         if (Controller.getInstance().isKeySPressed()) {
             world.getPlayer().getCentre().ApplyVector(GlobalConst.sFighterSMov);
         }
+        // Whether laser is on logic
         if (Controller.getInstance().isKeySpacePressed()) {
-            createBullet();
-            Controller.getInstance().setKeySpacePressed(false);
+            // If current weapon is laser
+            if (world.getPlayer().currentWeapon == WeaponTypes.Laser) world.laser.isOn = true;
+            // Bullet part
+            else {
+                createBullet();
+                Controller.getInstance().setKeySpacePressed(false);
+            }
+        } else {
+            if (world.getPlayer().currentWeapon == WeaponTypes.Laser) world.laser.isOn = false;
         }
     }
+
     private void createBullet() {
-        world.getBullets().add(new GameObject(world.bulletResource, 32, 64, new Point3f(world.getPlayer().getCentre().getX(), world.getPlayer().getCentre().getY(), 0.0f)));
+        world.getBullets().add(new WeaponObject(world.bulletResource, 32, 64, new Point3f(world.getPlayer().getCentre().getX(), world.getPlayer().getCentre().getY(), 0.0f)));
     }
 }
