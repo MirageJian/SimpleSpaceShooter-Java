@@ -1,3 +1,4 @@
+import settings.GlobalConst;
 import util.GameResource;
 
 import java.awt.Graphics;
@@ -99,13 +100,20 @@ public class Viewer extends JPanel {
         //The spirte is 32x32 pixel wide and 4 of them are placed together so we need to grab a different one each time
         //remember your training :-) computer science everything starts at 0 so 32 pixels gets us to 31
         int currentPositionInAnimation = CurrentAnimationTime % 40 / 10 * 32; //slows down animation so every 10 frames we get another frame so every 100ms
-        g.drawImage(myImage, x-width/2, y-height/2, x + width/2, y + height/2,
+        g.drawImage(myImage, x - width / 2, y - height / 2, x + width / 2, y + height / 2,
                 currentPositionInAnimation, 0, currentPositionInAnimation + 31, 32, null);
     }
 
     private void drawBackground(Graphics g) {
         int currentPositionInAnimation = CurrentAnimationTime % 1919;
-        g.drawImage(gameWorld.backgroundResource.imageTexture, 0, 0, 1000, 1000, 0, 1919-currentPositionInAnimation, 1080, 3838-currentPositionInAnimation, null);
+        GameResource bgEffect = gameWorld.bgEffectResource;
+        int current2 = CurrentAnimationTime * 20 % bgEffect.drawHeight / 2;
+        int current3 = CurrentAnimationTime * 50 % 1000;
+        g.drawImage(gameWorld.backgroundResource.imageTexture, 0, 0, GlobalConst.LAYOUT_WIDTH, GlobalConst.LAYOUT_HEIGHT,
+                0, 1919 - currentPositionInAnimation, 1080, 3838 - currentPositionInAnimation, null);
+        g.drawImage(bgEffect.imageTexture, 0, 0, GlobalConst.LAYOUT_WIDTH, GlobalConst.LAYOUT_HEIGHT,
+                0, bgEffect.drawHeight / 2 - current2, bgEffect.drawWidth, bgEffect.drawHeight - current2, null);
+//        g.drawImage(gameWorld.bgEffectFResource.imageTexture, 0, 0, 1000, 1000, 0, 1000-current3, 1000, 2000-current3, null);
     }
 
     private void drawBullet(int x, int y, int width, int height, Image texture, Graphics g) {
@@ -119,14 +127,19 @@ public class Viewer extends JPanel {
     }
 
     private void drawLaser(int x, int y, Graphics g) {
-        GameResource resource = gameWorld.laser.resource;
-        int current = CurrentAnimationTime % 12 * resource.drawWidth;
-        try {
+        if (gameWorld.laser.isOn) {
+            GameResource resource = gameWorld.laser.resource;
+            int current = CurrentAnimationTime % 12 * resource.drawWidth;
+            float dy1 = y - gameWorld.laser.getHeight();
+            // Draw top left from 50
+            float reduceHeight = 50;
+            if (gameWorld.laser.getContactObject() != null) {
+                dy1 = gameWorld.laser.getContactObject().getHeight() / 2f + gameWorld.laser.getContactObject().getCentre().getY();
+//                reduceHeight = (y - gameWorld.laser.getHeight() - dy1) / gameWorld.laser.getHeight() * resource.drawHeight;
+            }
             g.drawImage(gameWorld.laserResource.imageTexture,
-                    x - gameWorld.laser.getWidth()/2 , y - gameWorld.laser.getHeight(), x + gameWorld.laser.getWidth()/2, y,
-                    current, 0, resource.drawWidth + current, resource.drawHeight, null);
-        } catch (Exception e) {
-            e.printStackTrace();
+                    x - gameWorld.laser.getWidth() / 2, (int)dy1, x + gameWorld.laser.getWidth() / 2, y,
+                    current, (int)reduceHeight, resource.drawWidth + current, resource.drawHeight, null);
         }
     }
 
@@ -135,12 +148,11 @@ public class Viewer extends JPanel {
             //The spirte is 32x32 pixel wide and 4 of them are placed together so we need to grab a different one each time
             //remember your training :-) computer science everything starts at 0 so 32 pixels gets us to 31
             int currentPositionInAnimation = CurrentAnimationTime % 6 * 125; //slows down animation so every 10 frames we get another frame so every 100ms
-            g.drawImage(texture, x-width/2, y-height/2, x + width/2, y + height/2, currentPositionInAnimation, 0, currentPositionInAnimation + 124, 160, null);
-
+            g.drawImage(texture, x - width / 2, y - height / 2, x + width / 2, y + height / 2,
+                    currentPositionInAnimation, 0, currentPositionInAnimation + 124, 160, null);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         //g.drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, observer));
         //Lighnting Png from https://opengameart.org/content/animated-spaceships  its 32x32 thats why I know to increament by 32 each time
         // Bullets from https://opengameart.org/forumtopic/tatermands-art

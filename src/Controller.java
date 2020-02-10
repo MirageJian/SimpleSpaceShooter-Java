@@ -36,7 +36,8 @@ public class Controller implements KeyListener {
 	   private static boolean KeyDPressed= false;
 	   private static boolean KeyWPressed= false;
 	   private static boolean KeySpacePressed= false;
-	   
+	   private static boolean KeyRPressed= false;
+
 	   private static final Controller instance = new Controller();
 	   
 	 public Controller() { 
@@ -62,6 +63,7 @@ public class Controller implements KeyListener {
 			case 'w':setKeyWPressed(true);break;
 			case 'd':setKeyDPressed(true);break;
 			case ' ':setKeySpacePressed(true);break;   
+			case 'r':setKeyRPressed(true);break;
 		    default:
 		    	//System.out.println("Controller test:  Unknown key pressed");
 		        break;
@@ -80,8 +82,9 @@ public class Controller implements KeyListener {
 			case 's':setKeySPressed(false);break;
 			case 'w':setKeyWPressed(false);break;
 			case 'd':setKeyDPressed(false);break;
-			case ' ':setKeySpacePressed(false);break;   
-		    default:
+			case ' ':setKeySpacePressed(false);break;
+			case 'r':setKeyRPressed(false);break;
+			default:
 		    	//System.out.println("Controller test:  Unknown key pressed");
 		        break;
 		}  
@@ -134,12 +137,18 @@ public class Controller implements KeyListener {
 		return KeySpacePressed;
 	}
 
+	public void setKeySpacePressed(boolean keyRPressed) {
+		KeySpacePressed = keyRPressed;
+	}
+	// For switching weapon
+	public boolean isKeyRPressed() {
+		return KeyRPressed;
+	}
 
-	public void setKeySpacePressed(boolean keySpacePressed) {
-		KeySpacePressed = keySpacePressed;
-	} 
-	
-	 
+	public void setKeyRPressed(boolean keyRPressed) {
+		KeyRPressed = keyRPressed;
+	}
+
 }
 
 /*

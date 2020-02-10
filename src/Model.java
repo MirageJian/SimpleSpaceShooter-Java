@@ -1,8 +1,9 @@
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import gameObjects.BulletObject;
 import gameObjects.EnemyObject;
 import gameObjects.PlayerObject;
-import gameObjects.WeaponObject;
+import gameObjects.LaserObject;
 import util.*;
 
 /*
@@ -35,19 +36,22 @@ public class Model {
     private PlayerObject Player;
     private Controller controller = Controller.getInstance();
     private CopyOnWriteArrayList<EnemyObject> EnemiesList = new CopyOnWriteArrayList<>();
-    private CopyOnWriteArrayList<GameObject> BulletList = new CopyOnWriteArrayList<>();
-    public WeaponObject laser;
+    private CopyOnWriteArrayList<BulletObject> BulletList = new CopyOnWriteArrayList<>();
+    public LaserObject laser;
     // Game Resources
     public GameResource lightingResource;
     public GameResource ufoResource;
     public GameResource bulletResource;
     public GameResource backgroundResource;
+    public GameResource bgEffectResource;
+    public GameResource bgEffectFResource;
     public GameResource laserResource;
 
     public Model() {
         //setup game world
         // Background
         backgroundResource = new GameResource("res/BG_1080_3838.png");
+        bgEffectResource = new GameResource("res/BG_Effect_1000.png", 1000, 2000);
         //Player
         lightingResource = new GameResource("res/player_750_160.png");
         Point3f playerCentre = new Point3f(500, 500, 0);
@@ -62,7 +66,7 @@ public class Model {
         bulletResource = new GameResource("res/Bullet.png");
         // Laser has the same centre as player
         laserResource = new GameResource("res/texture_laser_1200_600.png", 100, 600);
-        laser = new WeaponObject(laserResource, 20, 800, new Point3f(0,0,0));
+        laser = new LaserObject(laserResource, 20, 800, new Point3f(0,0,0));
         laser.setCentre(playerCentre);
     }
 
@@ -74,18 +78,18 @@ public class Model {
         return EnemiesList;
     }
 
-    public CopyOnWriteArrayList<GameObject> getBullets() {
+    public CopyOnWriteArrayList<BulletObject> getBullets() {
         return BulletList;
     }
 
     void addScore(EnemyObject object) {
-        Score += object.score;
+        Score += object.getScore();
     }
     void addScore() {
         Score ++;
     }
     void minusScore(EnemyObject object) {
-        Score -= object.score;
+        Score -= object.getScore();
     }
     int getScore() {return Score;}
 }

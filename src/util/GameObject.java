@@ -56,6 +56,13 @@ public abstract class GameObject {
         //make sure to put boundaries on the gameObject
     }
 
+    protected void setWidth(int width) {
+        this.width = width;
+    }
+    protected void setHeight(int height) {
+        this.height = height;
+    }
+
     public int getWidth() {
         return width;
     }
@@ -76,6 +83,7 @@ public abstract class GameObject {
         centre.setY(centre.getY() + height / 2f);
         return centre;
     }
+    // Try to get point of an object
     public Point3f getTopLeft() {
         return new Point3f(centre.getX() - width / 2f, centre.getY() - height / 2f, 0);
     }
