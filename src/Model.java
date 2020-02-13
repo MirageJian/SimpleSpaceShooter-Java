@@ -1,7 +1,8 @@
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import gameObjects.BulletObject;
-import gameObjects.EnemyObject;
+import gameObjects.PickupObject;
+import gameObjects.enemy.EnemyObject;
 import gameObjects.PlayerObject;
 import gameObjects.LaserObject;
 import util.*;
@@ -31,20 +32,37 @@ SOFTWARE.
    (MIT LICENSE ) e.g do what you want with this :-) 
  */
 public class Model {
+    public boolean isGameEnd = false;
     private int Score = 0;
     // Game Objects
     private PlayerObject Player;
     private Controller controller = Controller.getInstance();
     private CopyOnWriteArrayList<EnemyObject> EnemiesList = new CopyOnWriteArrayList<>();
     private CopyOnWriteArrayList<BulletObject> BulletList = new CopyOnWriteArrayList<>();
+    // Enemy Bullet list
+    public CopyOnWriteArrayList<BulletObject> eBulletList = new CopyOnWriteArrayList<>();
+    // Pickup objects
+    public CopyOnWriteArrayList<PickupObject> pickupList = new CopyOnWriteArrayList<>();
+    public GameResource[] numbers = new GameResource[]{
+            new GameResource("res/numbers_910_152(91).png", 91, 152, 0),
+            new GameResource("res/numbers_910_152(91).png", 91, 152, 91),
+            new GameResource("res/numbers_910_152(91).png", 91, 152, 182),
+            new GameResource("res/numbers_910_152(91).png", 91, 152, 273),
+            new GameResource("res/numbers_910_152(91).png", 91, 152, 364),
+            new GameResource("res/numbers_910_152(91).png", 91, 152, 455),
+            new GameResource("res/numbers_910_152(91).png", 91, 152, 546),
+            new GameResource("res/numbers_910_152(91).png", 91, 152, 637),
+            new GameResource("res/numbers_910_152(91).png", 91, 152, 728),
+            new GameResource("res/numbers_910_152(91).png", 91, 152, 819),
+    };
     public LaserObject laser;
+    public GameResource shieldResource;
     // Game Resources
     public GameResource lightingResource;
-    public GameResource ufoResource;
+    // Enemies
     public GameResource bulletResource;
     public GameResource backgroundResource;
     public GameResource bgEffectResource;
-    public GameResource bgEffectFResource;
     public GameResource laserResource;
 
     public Model() {
@@ -54,20 +72,13 @@ public class Model {
         bgEffectResource = new GameResource("res/BG_Effect_1000.png", 1000, 2000);
         //Player
         lightingResource = new GameResource("res/player_750_160.png");
-        Point3f playerCentre = new Point3f(500, 500, 0);
-        Player = new PlayerObject(lightingResource, 50, 50, playerCentre);
-        //Enemies  starting with four
-        ufoResource = new GameResource("res/UFO.png");
-        EnemiesList.add(new EnemyObject(ufoResource, 50, 50, new Point3f(((float) Math.random() * 50 + 400), 0, 0)));
-        EnemiesList.add(new EnemyObject(ufoResource, 50, 50, new Point3f(((float) Math.random() * 50 + 500), 0, 0)));
-        EnemiesList.add(new EnemyObject(ufoResource, 50, 50, new Point3f(((float) Math.random() * 100 + 500), 0, 0)));
-        EnemiesList.add(new EnemyObject(ufoResource, 50, 50, new Point3f(((float) Math.random() * 100 + 400), 0, 0)));
+        Player = new PlayerObject(lightingResource, 50, 50, new Point3f(500, 500, 0));
         // Bullets
-        bulletResource = new GameResource("res/Bullet.png");
+        bulletResource = new GameResource("res/Player_Bullet_76_18(18-15-10).png", 10, 18);
         // Laser has the same centre as player
         laserResource = new GameResource("res/texture_laser_1200_600.png", 100, 600);
-        laser = new LaserObject(laserResource, 20, 800, new Point3f(0,0,0));
-        laser.setCentre(playerCentre);
+        laser = new LaserObject(laserResource, 20, 800, Player);
+        shieldResource = new GameResource("res/shield2.png", 135, 133);
     }
 
     public PlayerObject getPlayer() {
@@ -87,9 +98,6 @@ public class Model {
     }
     void addScore() {
         Score ++;
-    }
-    void minusScore(EnemyObject object) {
-        Score -= object.getScore();
     }
     int getScore() {return Score;}
 }

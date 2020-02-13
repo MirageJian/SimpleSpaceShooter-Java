@@ -56,14 +56,14 @@ public class Controller implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) 
 	{ 
-		switch (e.getKeyChar()) 
+		switch (e.getKeyChar())
 		{
-			case 'a':setKeyAPressed(true);break;  
-			case 's':setKeySPressed(true);break;
-			case 'w':setKeyWPressed(true);break;
-			case 'd':setKeyDPressed(true);break;
-			case ' ':setKeySpacePressed(true);break;   
-			case 'r':setKeyRPressed(true);break;
+			case 'a':case 'A':setKeyAPressed(true);break;
+			case 's':case 'S':setKeySPressed(true);break;
+			case 'w':case 'W':setKeyWPressed(true);break;
+			case 'd':case 'D':setKeyDPressed(true);break;
+			case ' ':setKeySpacePressed(true);break;
+			case 'r':case 'R':setKeyRPressed(true);break;
 		    default:
 		    	//System.out.println("Controller test:  Unknown key pressed");
 		        break;
@@ -76,14 +76,14 @@ public class Controller implements KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) 
 	{ 
-		switch (e.getKeyChar()) 
+		switch (e.getKeyChar())
 		{
-			case 'a':setKeyAPressed(false);break;  
-			case 's':setKeySPressed(false);break;
-			case 'w':setKeyWPressed(false);break;
-			case 'd':setKeyDPressed(false);break;
+			case 'a':case 'A':setKeyAPressed(false);break;
+			case 's':case 'S':setKeySPressed(false);break;
+			case 'w':case 'W':setKeyWPressed(false);break;
+			case 'd':case 'D':setKeyDPressed(false);break;
 			case ' ':setKeySpacePressed(false);break;
-			case 'r':setKeyRPressed(false);break;
+			case 'r':case 'R':setKeyRPressed(false);break;
 			default:
 		    	//System.out.println("Controller test:  Unknown key pressed");
 		        break;

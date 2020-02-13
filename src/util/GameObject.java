@@ -44,11 +44,15 @@ public abstract class GameObject {
         this.resource = resource;
         this.width = width;
         this.height = height;
-        this.centre = normalizedCentre(width, height, centre);
+        this.centre = normalizedCentre(width, height, centre != null ? centre : new Point3f(0,0,0));
     }
 
     public Point3f getCentre() {
         return centre;
+    }
+
+    public Point3f getNewCentre() {
+        return new Point3f(centre.getX(), centre.getY(), centre.getZ());
     }
 
     public void setCentre(Point3f centre) {
@@ -77,18 +81,12 @@ public abstract class GameObject {
         }
         return GameResource.sBlankTexture.imageTexture;
     }
+
     // Return normalised centred object
-    private Point3f normalizedCentre(int width, int height, Point3f centre) {
+    protected Point3f normalizedCentre(int width, int height, Point3f centre) {
         centre.setX(centre.getX() + width / 2f);
         centre.setY(centre.getY() + height / 2f);
         return centre;
-    }
-    // Try to get point of an object
-    public Point3f getTopLeft() {
-        return new Point3f(centre.getX() - width / 2f, centre.getY() - height / 2f, 0);
-    }
-    public Point3f getBottomRight() {
-        return new Point3f(centre.getX() + width / 2f, centre.getY() + height / 2f, 0);
     }
 }
 

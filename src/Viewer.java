@@ -1,9 +1,12 @@
+import gameObjects.BulletObject;
+import gameObjects.PickupObject;
+import gameObjects.PlayerObject;
+import gameObjects.enemy.EnemyObject;
 import settings.GlobalConst;
 import util.GameResource;
 
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.LayoutManager;
+import java.awt.*;
+import java.awt.geom.AffineTransform;
 
 import javax.swing.JPanel;
 
@@ -38,71 +41,76 @@ public class Viewer extends JPanel {
 
     public Viewer(Model world) {
         this.gameWorld = world;
-        // TODO Auto-generated constructor stub
     }
 
     public Viewer(LayoutManager layout) {
         super(layout);
-        // TODO Auto-generated constructor stub
     }
 
     public Viewer(boolean isDoubleBuffered) {
         super(isDoubleBuffered);
-        // TODO Auto-generated constructor stub
     }
 
     public Viewer(LayoutManager layout, boolean isDoubleBuffered) {
         super(layout, isDoubleBuffered);
-        // TODO Auto-generated constructor stub
     }
 
     public void updateview() {
         this.repaint();
-        // TODO Auto-generated method stub
 
     }
 
-
     public void paintComponent(Graphics g) {
-
         super.paintComponent(g);
+        Graphics2D g2d= (Graphics2D) g;
         CurrentAnimationTime++; // runs animation time step
-
-
         //Draw player Game Object
         int x = (int) gameWorld.getPlayer().getCentre().getX();
         int y = (int) gameWorld.getPlayer().getCentre().getY();
         int width = (int) gameWorld.getPlayer().getWidth();
         int height = (int) gameWorld.getPlayer().getHeight();
         Image texture = gameWorld.getPlayer().getTexture();
-
         //Draw background
-        drawBackground(g);
-
-        drawLaser(x, y, g);
-
-        //Draw player
-        drawPlayer(x, y, width, height, texture, g);
-
-        //Draw Bullets
-        // change back
+        drawBackground(g2d);
+        // Laser part
+        drawLaser(x, y, g2d);
+        gameWorld.pickupList.forEach(p -> drawPickups((int)p.getCentre().getX(), (int)p.getCentre().getY(), p, g2d));
+        //Draw Bullets change back
         gameWorld.getBullets().forEach((temp) -> {
-            drawBullet((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), (int) temp.getWidth(), (int) temp.getHeight(), temp.getTexture(), g);
+            drawBullet((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), temp, g2d);
         });
-
         //Draw Enemies
-        gameWorld.getEnemies().forEach((temp) -> {
-            drawEnemies((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), (int) temp.getWidth(), (int) temp.getHeight(), temp.getTexture(), g);
-        });
+        gameWorld.getEnemies().forEach((enemy) -> drawEnemies((int) enemy.getCentre().getX(), (int) enemy.getCentre().getY(), enemy, g2d));
+        //Draw player
+        drawPlayer(x, y, width, height, texture, g2d);
+        //Draw Enemies' Bullets
+        gameWorld.eBulletList.forEach((eb) -> drawEBullets((int) eb.getCentre().getX(), (int) eb.getCentre().getY(), eb, g2d));
+        // Score UI
+        drawScore(g2d);
     }
 
-    private void drawEnemies(int x, int y, int width, int height, Image myImage, Graphics g) {
+    private void drawEnemies(int x, int y, EnemyObject enemy, Graphics2D g) {
         //The spirte is 32x32 pixel wide and 4 of them are placed together so we need to grab a different one each time
         //remember your training :-) computer science everything starts at 0 so 32 pixels gets us to 31
         int currentPositionInAnimation = CurrentAnimationTime % 40 / 10 * 32; //slows down animation so every 10 frames we get another frame so every 100ms
-        g.drawImage(myImage, x - width / 2, y - height / 2, x + width / 2, y + height / 2,
-                currentPositionInAnimation, 0, currentPositionInAnimation + 31, 32, null);
+        AffineTransform backup = g.getTransform();
+        if (enemy.isRotating()) {
+            AffineTransform tx = AffineTransform.getRotateInstance(Math.toRadians(CurrentAnimationTime % 360), x, y);
+            g.transform(tx);
+        }
+        g.drawImage(enemy.getTexture(),x - enemy.getWidth() / 2, y - enemy.getHeight() / 2, x + enemy.getWidth() / 2, y + enemy.getHeight() / 2,
+                0, 0, enemy.resource.drawWidth , enemy.resource.drawHeight, null);
+        g.setTransform(backup);
     }
+    private void drawPickups(int x, int y, PickupObject p, Graphics2D g2d) {
+        g2d.drawImage(p.getTexture(),x - p.getWidth() / 2, y - p.getHeight() / 2, x + p.getWidth() / 2, y + p.getHeight() / 2,
+                0, 0, p.resource.drawWidth , p.resource.drawHeight, null);
+    }
+    private void drawEBullets(int x, int y, BulletObject eb, Graphics2D g) {
+        g.drawImage(eb.getTexture(),x - eb.getWidth() / 2, y - eb.getHeight() / 2, x + eb.getWidth() / 2, y + eb.getHeight() / 2,
+                0, 0, eb.resource.drawWidth , eb.resource.drawHeight, null);
+    }
+
 
     private void drawBackground(Graphics g) {
         int currentPositionInAnimation = CurrentAnimationTime % 1919;
@@ -116,10 +124,12 @@ public class Viewer extends JPanel {
 //        g.drawImage(gameWorld.bgEffectFResource.imageTexture, 0, 0, 1000, 1000, 0, 1000-current3, 1000, 2000-current3, null);
     }
 
-    private void drawBullet(int x, int y, int width, int height, Image texture, Graphics g) {
+    private void drawBullet(int x, int y, BulletObject bullet, Graphics g) {
         try {
-            //64 by 128
-            g.drawImage(texture, x, y, x + width, y + height, 0, 0, 63, 127, null);
+            //64 by 128 The center is on the middle of top of bullet
+            int textureStart = bullet.resource.textureStart;
+            g.drawImage(bullet.resource.imageTexture,x-bullet.getWidth()/2 , y,x+bullet.getWidth()/2, y + bullet.getHeight(),
+                    textureStart, 0, textureStart + bullet.getWidth(), bullet.resource.drawHeight, null);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -150,6 +160,13 @@ public class Viewer extends JPanel {
             int currentPositionInAnimation = CurrentAnimationTime % 6 * 125; //slows down animation so every 10 frames we get another frame so every 100ms
             g.drawImage(texture, x - width / 2, y - height / 2, x + width / 2, y + height / 2,
                     currentPositionInAnimation, 0, currentPositionInAnimation + 124, 160, null);
+            // Draw shield texture
+            if (gameWorld.getPlayer().isShield()) {
+                width = width + PlayerObject.S_EXTRA_WIDTH;
+                height = height + PlayerObject.S_EXTRA_WIDTH;
+                g.drawImage(gameWorld.shieldResource.imageTexture, x - width / 2, y - height / 2, x + width / 2, y + height / 2,
+                        0, 0, gameWorld.shieldResource.drawWidth, gameWorld.shieldResource.drawHeight, null);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -158,6 +175,19 @@ public class Viewer extends JPanel {
         // Bullets from https://opengameart.org/forumtopic/tatermands-art
         // background image from https://www.needpix.com/photo/download/677346/space-stars-nebula-background-galaxy-universe-free-pictures-free-photos-free-images
 
+    }
+    private void drawScore(Graphics2D g2d){
+//        g2d.drawImage(gameWorld.numbers[0].imageTexture, 0, 0, null);
+        int offset = 10;
+        int interval = 4;
+        int width = 20;
+        int height = 30;
+        for (int i = 0; i < gameWorld.numbers.length; i++) {
+            Image num = gameWorld.numbers[i].imageTexture;
+            g2d.drawImage(num, offset + (interval + width) * i, offset, offset + (interval + width) * i + width, offset + height,
+                    gameWorld.numbers[i].textureStart, 0,
+                    gameWorld.numbers[i].textureStart + gameWorld.numbers[i].drawWidth, gameWorld.numbers[i].drawHeight, null);
+        }
     }
 }
 
