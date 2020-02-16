@@ -42,17 +42,17 @@ SOFTWARE.
 
 
 public class MainWindow {
-    private static JFrame frame = new JFrame("Game");   // Change to the name of your game
+    private static JFrame frame = new JFrame("Simple Space Shooting");   // Change to the name of your game
     private static Model gameWorld = new Model();
     private static Viewer canvas = new Viewer(gameWorld);
-    private static GameLogic gameLogic = new GameLogic(gameWorld);
-    private KeyListener Controller = new Controller();
+    private KeyListener controller = new Controller();
     // private static int TargetFPS = 60;
     private static boolean startGame = false;
     private JLabel BackgroundImageForStartMenu;
+    private JButton startMenuButton;
 
     public MainWindow() {
-        frame.setSize(GlobalConst.LAYOUT_WIDTH, GlobalConst.LAYOUT_HEIGHT);  // you can customise this later and adapt it to change on size.
+        frame.setSize(GlobalConst.LAYOUT_WIDTH + 14, GlobalConst.LAYOUT_HEIGHT);  // you can customise this later and adapt it to change on size.
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);   //If exit // you can modify with your way of quitting , just is a template.
         frame.setLayout(null);
         frame.add(canvas);
@@ -60,24 +60,23 @@ public class MainWindow {
         canvas.setBackground(new Color(255, 255, 255)); //white background  replaced by Space background but if you remove the background method this will draw a white screen
         canvas.setVisible(false);   // this will become visible after you press the key.
 
-        JButton startMenuButton = new JButton("Start Game");  // start button
+        startMenuButton = new JButton("Start Shooting");  // start button
         startMenuButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 startMenuButton.setVisible(false);
                 BackgroundImageForStartMenu.setVisible(false);
                 canvas.setVisible(true);
-                canvas.addKeyListener(Controller);    //adding the controller to the Canvas
+                canvas.addKeyListener(controller);    //adding the controller to the Canvas
                 canvas.requestFocusInWindow();   // making sure that the Canvas is in focus so keyboard input will be taking in .
                 startGame = true;
             }
         });
         startMenuButton.setBounds(400, 500, 200, 40);
 
-        //loading background image
+        // loading background image
         File BackroundToLoad = new File("res/startscreen.png");  //should work okay on OSX and Linux but check if you have issues depending your eclipse install or if your running this without an IDE
         try {
-
             BufferedImage myPicture = ImageIO.read(BackroundToLoad);
             BackgroundImageForStartMenu = new JLabel(new ImageIcon(myPicture));
             BackgroundImageForStartMenu.setBounds(0, 0, GlobalConst.LAYOUT_WIDTH, GlobalConst.LAYOUT_HEIGHT);
@@ -102,8 +101,7 @@ public class MainWindow {
             while (FrameCheck > System.currentTimeMillis()) { }
 
             if (startGame) {
-                if (!gameWorld.isGameEnd) gameloop();
-                else break;
+                gameloop();
             }
             //UNIT test to see if framerate matches
             UnitTests.CheckFrameRate(System.currentTimeMillis(), FrameCheck, GlobalConst.TARGET_FRAME);
@@ -118,14 +116,13 @@ public class MainWindow {
         // So no need to call it explicitly
 
         // model update
-        gameLogic.doLogic();
+        if (!gameWorld.isGameEnd) gameWorld.getGameLogic().doLogic();
+        else if (Controller.getInstance().isKeySpacePressed()) gameWorld.resetWorld();
         // view update
 
         canvas.updateview();
 
         // Both these calls could be setup as  a thread but we want to simplify the game logic for you.
-        //score update
-        frame.setTitle("Score =  " + gameWorld.getScore());
     }
 }
 

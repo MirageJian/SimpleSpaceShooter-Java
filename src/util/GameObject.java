@@ -33,7 +33,8 @@ public abstract class GameObject {
     private int height = 10;
     private boolean hasTextured = false;
     public GameResource resource;
-    public int textureCount = 0;
+    // Set rotation parameters
+    private double rotation = 0;
 
     public GameObject() {
 
@@ -87,6 +88,18 @@ public abstract class GameObject {
         centre.setX(centre.getX() + width / 2f);
         centre.setY(centre.getY() + height / 2f);
         return centre;
+    }
+    // Set rotation angle of object
+    public double getRotation() {
+        return rotation;
+    }
+    /** Use Radians*/
+    public <T extends GameObject> T setRotation(Class<T> type, double rotation) {
+        this.rotation = rotation;
+        return type.cast(this);
+    }
+    public void setRotation(double rotation) {
+        this.rotation = rotation;
     }
 }
 

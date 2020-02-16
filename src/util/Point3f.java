@@ -57,8 +57,8 @@ public class Point3f {
     }
 
     // sometimes for different algorithms we will need to address the point using positions 0 1 2
-    public float getPostion(int postion) {
-        switch (postion) {
+    public float getPosition(int position) {
+        switch (position) {
             case 0:
                 return getX();
             case 1:

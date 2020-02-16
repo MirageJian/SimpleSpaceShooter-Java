@@ -2,9 +2,8 @@ package gameObjects.enemy;
 
 import gameObjects.BulletObject;
 import gameObjects.PlayerObject;
-import settings.GlobalConst;
+import util.CMath;
 import util.GameResource;
-import util.Vector3f;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -14,8 +13,8 @@ public class UfoEnemy extends EnemyObject {
     private int intensity;
 
     public UfoEnemy(int intensity) {
-        super(ufoResource, 50, 50, 100, GlobalConst.getVectorPerFrame(new Vector3f(0,-100,0)), 1000, 120);
-        this.setRotating(UfoEnemy.class, true);
+        super(ufoResource, 50, 50, 100, CMath.vectorByXYZ(0,-100,0), 1000, 120);
+        setAngularV(Math.toRadians(90));
         this.intensity = intensity;
     }
 
@@ -23,7 +22,7 @@ public class UfoEnemy extends EnemyObject {
     public void fire(CopyOnWriteArrayList<BulletObject> EBulletList, PlayerObject player) {
         switch (cd) {
             case 0:
-                EBulletList.add(new BulletObject(bulletRes, 20, 20, GlobalConst.getVectorPerFrame(new Vector3f(0,-200,0)), this.getNewCentre()));
+                EBulletList.add(new BulletObject(bulletRes, 20, 20, CMath.vectorByXYZ(0,-200,0), this.getNewCentre()));
         }
         cd -= 1;
     }

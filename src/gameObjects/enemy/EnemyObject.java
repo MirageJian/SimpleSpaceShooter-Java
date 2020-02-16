@@ -13,11 +13,10 @@ public abstract class EnemyObject extends GameObject {
     // How enemy moves
     private Vector3f enemyVector;
     private boolean isStill = false;
-    // If this object is rotating
-    private boolean isRotating = false;
-    private int rotationAngle = 90;
     // Cool down time
     protected int cd; // Frames unit
+    // Rotation angle per second
+    private double angularV = 0;
     public EnemyObject(GameResource gameResource, int width, int height, int health, Vector3f enemyVector, int score, int cd) {
         super(gameResource, width, height, CMath.getRandomCentre());
         this.health = health;
@@ -30,6 +29,9 @@ public abstract class EnemyObject extends GameObject {
     }
     // If still, the object won't move
     public void applyVector() {
+        // Rotation setting
+        this.setRotation(this.getRotation() + this.getAngularV());
+        // Move
         if (!isStill) {
             getCentre().ApplyVector(enemyVector);
         }
@@ -38,6 +40,7 @@ public abstract class EnemyObject extends GameObject {
     public int getScore() {
         return score;
     }
+    // Is enemy dead
     public boolean isDead() {
         return health < 1;
     }
@@ -45,15 +48,17 @@ public abstract class EnemyObject extends GameObject {
         this.isStill = isStill;
         return type.cast(this);
     }
-    public <T extends EnemyObject> T setRotating(Class<T> type, boolean isRotating) {
-        this.isRotating = isRotating;
-        return type.cast(this);
-    }
-    public boolean isRotating() {
-        return isRotating;
-    }
+    // is enemy on the boundary
     public boolean isOnBoundary() {
         return getCentre().getY() > GlobalConst.LAYOUT_HEIGHT;
     }
+    // Set angular velocity
 
+    public double getAngularV() {
+        return angularV;
+    }
+
+    public  void setAngularV(double angularV) {
+        this.angularV = angularV / GlobalConst.TARGET_FRAME;
+    }
 }
