@@ -150,6 +150,7 @@ public class Viewer extends JPanel {
     }
 
     private void drawPlayer(PlayerObject player, Graphics2D g2d) {
+        if (player == null) return;
         //Draw player Game Object
         int x = (int) player.getCentre().getX();
         int y = (int) player.getCentre().getY();
@@ -185,8 +186,8 @@ public class Viewer extends JPanel {
     }
     private void drawScore(Graphics2D g2d){
 //        g2d.drawImage(gameWorld.numbers[0].imageTexture, 0, 0, null);
-        int offset = gameWorld.isGameEnd ? GlobalConst.LAYOUT_WIDTH / 2 - 120 : 10;
-        int offsetY = gameWorld.isGameEnd ? GlobalConst.LAYOUT_HEIGHT / 4 : offset;
+        int offset = gameWorld.isGameEnd() ? GlobalConst.LAYOUT_WIDTH / 2 - 120 : 10;
+        int offsetY = gameWorld.isGameEnd() ? GlobalConst.LAYOUT_HEIGHT / 4 : offset;
         int interval = 4;
         int width = 20;
         int height = 30;

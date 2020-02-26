@@ -23,11 +23,13 @@ public class GameLogic {
         // Player 1 Logic first
         if (!world.getPlayer().isDying() && !world.getPlayer().isDead()) playerLogic();
         if (world.getP2() != null) {
-            if (world.getP2().isDead() && world.getPlayer().isDead()) world.isGameEnd = true;
             // Player 2 Logic
             if (!world.getP2().isDying() && !world.getP2().isDead()) p2Logic();
-        }
-        else if (world.getPlayer().isDead()) world.isGameEnd = true;
+            // Game Over
+            if (world.getP2().isDead() && world.getPlayer().isDead()) world.setGameEnd(true);
+        } // Game Over
+        else if (world.getPlayer().isDead()) world.setGameEnd(true);
+        if (world.isGameEnd()) return;
         // Pickup objects Logic
         pickupLogic();
         // Enemy Logic next
@@ -101,7 +103,7 @@ public class GameLogic {
             // Move enemies
             enemy.applyVector();
             // Fire to player
-            enemy.fire(world.getEBulletList(), CMath.binaryRandom() ? world.getPlayer() : world.getP2());
+            enemy.fire(world.getEBulletList(), world.getP2() != null ? CMath.binaryRandom() ? world.getPlayer() : world.getP2() : world.getPlayer());
             // See if they get to the top of the screen ( remember 0 is the top
             if (enemy.isOnBoundary())  // current boundary need to pass value to model
                 world.getEnemies().remove(enemy);

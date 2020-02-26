@@ -32,7 +32,7 @@ SOFTWARE.
    (MIT LICENSE ) e.g do what you want with this :-) 
  */
 public class Model {
-    public boolean isGameEnd = false;
+    private boolean isGameEnd = false;
     private int score = 0;
     // Game Objects
     private PlayerObject player;
@@ -110,6 +110,14 @@ public class Model {
         score++;
     }
     int getScore() {return score;}
+    public boolean isGameEnd() {
+        return isGameEnd;
+    }
+    public void setGameEnd(boolean gameEnd) {
+        isGameEnd = gameEnd;
+        player = null;
+        p2 = null;
+    }
     public GameLogic getGameLogic() {
         return gameLogic;
     }

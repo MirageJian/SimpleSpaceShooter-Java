@@ -139,7 +139,7 @@ public class MainWindow {
                 long FrameCheck = System.currentTimeMillis() + (long) GlobalConst.INTERVAL_PER_FRAME;
                 //wait till next time step
                 while (FrameCheck > System.currentTimeMillis()) { }
-                if (startGame && !gameWorld.isGameEnd) {
+                if (startGame && !gameWorld.isGameEnd()) {
                     gameloop();
                 } else break;
                 //UNIT test to see if framerate matches
