@@ -1,5 +1,6 @@
 package util;
 
+import gameObjects.PlayerObject;
 import settings.GlobalConst;
 
 public class CMath {
@@ -37,5 +38,8 @@ public class CMath {
     }
     public static int getFrames(double second) {
         return (int)(second * GlobalConst.TARGET_FRAME);
+    }
+    public static boolean binaryRandom() {
+        return Math.random() * 9 >= 5;
     }
 }

@@ -1,7 +1,5 @@
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 /*
  * Created by Abraham Campbell on 15/01/2020.
@@ -40,8 +38,6 @@ public class Controller implements KeyListener {
 
     private static final Controller instance = new Controller();
 
-    public Controller() {
-    }
 
     public static Controller getInstance() {
         return instance;

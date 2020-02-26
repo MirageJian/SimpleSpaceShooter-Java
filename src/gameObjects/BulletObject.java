@@ -28,7 +28,7 @@ public class BulletObject extends GameObject {
         getCentre().ApplyVector(bulletVector);
     }
     public boolean isOnBoundary() {
-        return getCentre().getY() <= 0 || getCentre().getX() <= 0 || getCentre().getX() >= GlobalConst.LAYOUT_WIDTH || getCentre().getX() >= GlobalConst.LAYOUT_HEIGHT;
+        return getCentre().getY() <= 0 || getCentre().getX() <= 0 || getCentre().getX() >= GlobalConst.LAYOUT_WIDTH || getCentre().getY() >= GlobalConst.LAYOUT_HEIGHT;
     }
     public int getTextureStart() {
         return textureStart;

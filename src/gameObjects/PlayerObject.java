@@ -8,9 +8,9 @@ import util.Point3f;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class PlayerObject extends GameObject {
-    public LaserObject laserObject;
+    public LaserObject laser;
     public WeaponTypes currentWeapon = WeaponTypes.Laser;
-    public static int bulletClodDown = 0;
+    public int bulletClodDown = 0;
     private int bulletLv = 1;
     // Shield lasting time, Extra width with shield
     private int shieldTime = 0;
@@ -20,6 +20,8 @@ public class PlayerObject extends GameObject {
 
     public PlayerObject(GameResource gameResource, int width, int height, Point3f centre) {
         super(gameResource, width, height, centre);
+        // set laser
+        laser = new LaserObject(new GameResource("res/texture_laser_1200_600.png", 100, 600), 20, 800, this);
     }
 
     // Create Bullet method
@@ -30,7 +32,6 @@ public class PlayerObject extends GameObject {
                 bullets.add(new BulletObject(resource, 10, 18, this, 90 + angle)
                         .setRotation(BulletObject.class, Math.toRadians(-angle)));
                 if (i != 0) {
-
                     bullets.add(new BulletObject(resource, 10, 18, this, 90 - angle)
                             .setRotation(BulletObject.class, Math.toRadians(angle)));
                 }

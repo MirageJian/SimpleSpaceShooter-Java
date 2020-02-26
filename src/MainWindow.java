@@ -1,4 +1,4 @@
-import java.awt.Color;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
@@ -11,8 +11,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 import settings.GlobalConst;
+import ui.Button;
 import util.UnitTests;
 
 /*
@@ -42,39 +47,50 @@ SOFTWARE.
 
 
 public class MainWindow {
+    public static void main(String[] args) {
+        new MainWindow();  //sets up environment
+    }
+
     private static JFrame frame = new JFrame("Simple Space Shooting");   // Change to the name of your game
     private static Model gameWorld = new Model();
     private static Viewer canvas = new Viewer(gameWorld);
-    private KeyListener controller = new Controller();
     // private static int TargetFPS = 60;
     private static boolean startGame = false;
     private JLabel BackgroundImageForStartMenu;
     private JButton startMenuButton;
+    private JButton doublePlayerButton;
+    private JLabel endText;
 
     public MainWindow() {
-        frame.setSize(GlobalConst.LAYOUT_WIDTH + 14, GlobalConst.LAYOUT_HEIGHT);  // you can customise this later and adapt it to change on size.
+        frame.setSize(GlobalConst.LAYOUT_WIDTH + 14, GlobalConst.LAYOUT_HEIGHT + 37);  // you can customise this later and adapt it to change on size.
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);   //If exit // you can modify with your way of quitting , just is a template.
+        frame.setResizable(false); // Not resizable
         frame.setLayout(null);
-        frame.add(canvas);
+        // Set canvas parameters
         canvas.setBounds(0, 0, GlobalConst.LAYOUT_WIDTH, GlobalConst.LAYOUT_HEIGHT);
         canvas.setBackground(new Color(255, 255, 255)); //white background  replaced by Space background but if you remove the background method this will draw a white screen
         canvas.setVisible(false);   // this will become visible after you press the key.
-
-        startMenuButton = new JButton("Start Shooting");  // start button
-        startMenuButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                startMenuButton.setVisible(false);
-                BackgroundImageForStartMenu.setVisible(false);
-                canvas.setVisible(true);
-                canvas.addKeyListener(controller);    //adding the controller to the Canvas
-                canvas.requestFocusInWindow();   // making sure that the Canvas is in focus so keyboard input will be taking in .
-                startGame = true;
-            }
+        // Start menu button
+        startMenuButton = new Button("Start Shooting");  // start button
+        startMenuButton.addActionListener(e -> startGame());
+        startMenuButton.setBounds(GlobalConst.LAYOUT_WIDTH / 2 - 100, GlobalConst.LAYOUT_HEIGHT / 2 - 20, 200, 40);
+        // Double player start Button
+        doublePlayerButton = new Button("Double Players");
+        doublePlayerButton.addActionListener(e -> {
+            gameWorld.setP2();
+            startGame();
         });
-        startMenuButton.setBounds(400, 500, 200, 40);
-
-        // loading background image
+        doublePlayerButton.setBounds(GlobalConst.LAYOUT_WIDTH / 2 - 100, GlobalConst.LAYOUT_HEIGHT / 2 + 40, 200, 40);
+        frame.add(doublePlayerButton);
+        frame.add(startMenuButton);
+        // Game Over tips
+        endText = new JLabel("GAME OVER");
+        endText.setFont(new Font(endText.getFont().toString(), Font.PLAIN, 36));
+        endText.setBounds(GlobalConst.LAYOUT_WIDTH / 2 - 110, GlobalConst.LAYOUT_HEIGHT / 4 - 80, 220, 40);
+        endText.setForeground(Color.WHITE);
+        endText.setVisible(false);
+        frame.add(endText);
+        // loading background image Set background
         File BackroundToLoad = new File("res/startscreen.png");  //should work okay on OSX and Linux but check if you have issues depending your eclipse install or if your running this without an IDE
         try {
             BufferedImage myPicture = ImageIO.read(BackroundToLoad);
@@ -84,45 +100,60 @@ public class MainWindow {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        frame.add(startMenuButton);
+        frame.add(canvas);
         frame.setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        MainWindow hello = new MainWindow();  //sets up environment
-        while (true)   //not nice but remember we do just want to keep looping till the end.  // this could be replaced by a thread but again we want to keep things simple
-        {
-            //swing has timer class to help us time this but I'm writing my own, you can of course use the timer, but I want to set FPS and display it
-
-            long FrameCheck = System.currentTimeMillis() + (long) GlobalConst.INTERVAL_PER_FRAME;
-
-            //wait till next time step
-            while (FrameCheck > System.currentTimeMillis()) { }
-
-            if (startGame) {
-                gameloop();
-            }
-            //UNIT test to see if framerate matches
-            UnitTests.CheckFrameRate(System.currentTimeMillis(), FrameCheck, GlobalConst.TARGET_FRAME);
-        }
     }
 
     //Basic Model-View-Controller pattern
     private static void gameloop() {
         // GAMELOOP
-
         // controller input  will happen on its own thread
         // So no need to call it explicitly
-
         // model update
-        if (!gameWorld.isGameEnd) gameWorld.getGameLogic().doLogic();
-        else if (Controller.getInstance().isKeySpacePressed()) gameWorld.resetWorld();
+        gameWorld.getGameLogic().doLogic();
         // view update
-
         canvas.updateview();
-
         // Both these calls could be setup as  a thread but we want to simplify the game logic for you.
+    }
+    private void startGame() {
+        endText.setVisible(false);
+        startMenuButton.setVisible(false);
+        doublePlayerButton.setVisible(false);
+        BackgroundImageForStartMenu.setVisible(false);
+        canvas.setVisible(true);
+        canvas.addKeyListener(Controller.getInstance());    //adding the controller to the Canvas
+        canvas.addMouseMotionListener(MouseControl.getInstance());
+        canvas.addMouseListener(MouseControl.getInstance());    //adding the Mouse Controller to the Canvas
+        canvas.requestFocusInWindow();   // making sure that the Canvas is in focus so keyboard input will be taking in .
+        // If game started, reset it every time.
+        if (startGame) {
+            gameWorld.resetWorld();
+        }
+        // It will help jump help screen
+        startGame = true;
+        // Use a new Thread for game loop
+        Thread thread = new Thread(() -> {
+            // not nice but remember we do just want to keep looping till the end.  // this could be replaced by a thread but again we want to keep things simple
+            while (true) {
+                //swing has timer class to help us time this but I'm writing my own, you can of course use the timer, but I want to set FPS and display it
+                long FrameCheck = System.currentTimeMillis() + (long) GlobalConst.INTERVAL_PER_FRAME;
+                //wait till next time step
+                while (FrameCheck > System.currentTimeMillis()) { }
+                if (startGame && !gameWorld.isGameEnd) {
+                    gameloop();
+                } else break;
+                //UNIT test to see if framerate matches
+                UnitTests.CheckFrameRate(System.currentTimeMillis(), FrameCheck, GlobalConst.TARGET_FRAME);
+            } // If game ends, show end option
+            showEndOption();
+        });
+        thread.start();
+    }
+
+    private void showEndOption() {
+        startMenuButton.setVisible(true);
+        doublePlayerButton.setVisible(true);
+        endText.setVisible(true);
     }
 }
 

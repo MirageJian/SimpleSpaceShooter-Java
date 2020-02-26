@@ -8,6 +8,12 @@ import util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public abstract class EnemyObject extends GameObject {
+    // Lode kinds of bullets
+    protected static GameResource energyBall = new GameResource("res/energyball.png", 44, 43);
+    protected static GameResource energyBall1 = new GameResource("res/energyball1.png", 44, 43);
+    protected static GameResource eBullet1 = new GameResource("res/ebullet1.png", 85, 31);
+    protected static GameResource eBullet2 = new GameResource("res/ebullet2.png", 45, 15);
+    // Score after death
     private int score;
     private int health;
     // How enemy moves

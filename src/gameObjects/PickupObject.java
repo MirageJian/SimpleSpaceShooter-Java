@@ -17,7 +17,7 @@ public class PickupObject extends GameObject {
     }
 
     public static PickupObject createPickup(Point3f centre) {
-        if (Math.random() * 2 > 1) return new PickupObject(shieldRes, centre, true);
+        if (CMath.binaryRandom()) return new PickupObject(shieldRes, centre, true);
         else return new PickupObject(weaponRes, centre, false);
     }
 
@@ -40,7 +40,7 @@ public class PickupObject extends GameObject {
             // Shield
             if (isShield) player.setShieldTime(CMath.getFrames(10));
                 // Laser upgrade
-            else if (player.laserObject.isOn) player.laserObject.laserUpgrade();
+            else if (player.laser.isOn) player.laser.laserUpgrade();
                 // Bullet upgrade
             else player.bulletUpgrade();
         }

@@ -4,7 +4,6 @@ import gameObjects.BulletObject;
 import gameObjects.PickupObject;
 import gameObjects.enemy.EnemyObject;
 import gameObjects.PlayerObject;
-import gameObjects.LaserObject;
 import settings.GlobalConst;
 import util.*;
 
@@ -37,6 +36,9 @@ public class Model {
     private int score = 0;
     // Game Objects
     private PlayerObject player;
+    private PlayerObject p2 = null; // Player 2
+    // Last contact Object for health display
+    private EnemyObject lastContact;
     private CopyOnWriteArrayList<EnemyObject> EnemiesList = new CopyOnWriteArrayList<>();
     private CopyOnWriteArrayList<BulletObject> BulletList = new CopyOnWriteArrayList<>();
     // Enemy Bullet list
@@ -46,7 +48,6 @@ public class Model {
     // Game logic class
     private GameLogic gameLogic;
     // Score UI Numbers
-    private LaserObject laser;
     public GameResource[] numbers = new GameResource[]{
             new GameResource("res/numbers_910_152(91).png", 91, 152, 0),
             new GameResource("res/numbers_910_152(91).png", 91, 152, 91),
@@ -61,7 +62,7 @@ public class Model {
     };
     public GameResource shieldResource;
     // Game Resources
-    public GameResource lightingResource;
+    public GameResource playerResource;
     // Enemies
     public GameResource bulletResource;
     // Background
@@ -76,12 +77,11 @@ public class Model {
         backgroundResource = new GameResource("res/BG_1080_3838.png");
         bgEffectResource = new GameResource("res/BG_Effect_1000.png", 1000, 2000);
         //Player
-        lightingResource = new GameResource("res/player_750_160.png");
-        player = new PlayerObject(lightingResource, 50, 50, new Point3f(GlobalConst.LAYOUT_WIDTH/2f, GlobalConst.LAYOUT_HEIGHT/2f, 0));
+        playerResource = new GameResource("res/player_750_160.png");
+        player = new PlayerObject(playerResource, 50, 50, new Point3f(GlobalConst.LAYOUT_WIDTH/2f, GlobalConst.LAYOUT_HEIGHT/2f, 0));
         // Bullets
         bulletResource = new GameResource("res/Player_Bullet_76_18(18-15-10).png", 10, 18);
         // Laser has the same centre as player
-        laser = new LaserObject(new GameResource("res/texture_laser_1200_600.png", 100, 600), 20, 800, player);
         shieldResource = new GameResource("res/shield2.png", 135, 133);
         explosionRes = new GameResource("res/exp_player.png", 64,64);
         gameLogic = new GameLogic(this);
@@ -110,18 +110,27 @@ public class Model {
         score++;
     }
     int getScore() {return score;}
-    public LaserObject getLaser() {
-        return laser;
-    }
-    GameLogic getGameLogic() {
+    public GameLogic getGameLogic() {
         return gameLogic;
     }
+    public EnemyObject getLastContact() {
+        return lastContact;
+    }
+    public void setLastContact(EnemyObject lastContact) {
+        this.lastContact = lastContact;
+    }
+    public PlayerObject getP2() {
+        return p2;
+    }
+    public void setP2() {
+        this.p2 = new PlayerObject(new GameResource("res/ship2.png", 125, 140), 50, 56, new Point3f(GlobalConst.LAYOUT_WIDTH/3f, GlobalConst.LAYOUT_HEIGHT/2f, 0));
+    }
+
     // The method reset the whole game
     void resetWorld() {
         isGameEnd = false;
         score = 0;
-        player = new PlayerObject(lightingResource, 50, 50, new Point3f(GlobalConst.LAYOUT_WIDTH/2f, GlobalConst.LAYOUT_HEIGHT/2f, 0));
-        laser = new LaserObject(new GameResource("res/texture_laser_1200_600.png", 100, 600), 20, 800, player);
+        player = new PlayerObject(playerResource, 50, 50, new Point3f(GlobalConst.LAYOUT_WIDTH/2f, GlobalConst.LAYOUT_HEIGHT/2f, 0));
         EnemiesList = new CopyOnWriteArrayList<>();
         BulletList = new CopyOnWriteArrayList<>();
         eBulletList = new CopyOnWriteArrayList<>();

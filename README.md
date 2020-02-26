@@ -17,4 +17,8 @@ Laser [Link](https://opengameart.org/content/laser-effect-sheet)
 Player Bullet [Link](https://opengameart.org/content/m484-lightning-weapon)
 
 Numbers [Link](https://opengameart.org/content/numbers-collection)
+
+Explosion [Link](https://opengameart.org/content/explosion)
+
+Background [Link](https://opengameart.org/content/stars-parallax-backgrounds)
 ## Feature
