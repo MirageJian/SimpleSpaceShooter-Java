@@ -2,6 +2,7 @@ import gameObjects.BulletObject;
 import gameObjects.LaserObject;
 import gameObjects.PickupObject;
 import gameObjects.PlayerObject;
+import gameObjects.enemy.EnemyObject;
 import settings.GlobalConst;
 import util.GameObject;
 import util.GameResource;
@@ -77,7 +78,10 @@ public class Viewer extends JPanel {
         gameWorld.getBullets().forEach((temp) ->
             drawBullet((int) temp.getCentre().getX(), (int) temp.getCentre().getY(), temp, g2d));
         //Draw Enemies
-        gameWorld.getEnemies().forEach((enemy) -> drawEnemiesAndBullet((int) enemy.getCentre().getX(), (int) enemy.getCentre().getY(), enemy, g2d));
+        gameWorld.getEnemies().forEach((enemy) -> {
+            drawEnemiesAndBullet((int) enemy.getCentre().getX(), (int) enemy.getCentre().getY(), enemy, g2d);
+            if (enemy.getHealthRatio() < 1) drawHealthBar(g2d, enemy);
+        });
         //Draw player 1
         drawPlayer(gameWorld.getPlayer(), g2d);
         // Draw Player 2
@@ -205,6 +209,16 @@ public class Viewer extends JPanel {
         Color backup = g2d.getColor();
         g2d.setColor(Color.BLACK);
         g2d.fillRect(0, 0 , GlobalConst.LAYOUT_WIDTH, GlobalConst.LAYOUT_HEIGHT);
+    }
+    private void drawHealthBar(Graphics2D g2d, EnemyObject enemy) {
+        if (enemy == null) return;
+        Color backup = g2d.getColor();
+        g2d.setColor(Color.WHITE);
+        int x = (int) enemy.getCentre().getX() - enemy.getWidth() / 2;
+        int y = (int) enemy.getCentre().getY() - enemy.getHeight() / 2 - 10;
+        g2d.drawRect(x, y, enemy.getWidth(), 8);
+        double health = enemy.getHealthRatio() * (enemy.getWidth() - 4);
+        g2d.fillRect(x + 2, y + 2, (int) health, 4);
         g2d.setColor(backup);
     }
 }

@@ -16,6 +16,7 @@ public abstract class EnemyObject extends GameObject {
     // Score after death
     private int score;
     private int health;
+    private double maxHealth;
     // How enemy moves
     private Vector3f enemyVector;
     private boolean isStill = false;
@@ -26,13 +27,16 @@ public abstract class EnemyObject extends GameObject {
     public EnemyObject(GameResource gameResource, int width, int height, int health, Vector3f enemyVector, int score, int cd) {
         super(gameResource, width, height, CMath.getRandomCentre());
         this.health = health;
+        maxHealth = health;
         this.enemyVector = enemyVector;
         this.score = score;
         this.cd = cd;
     }
+    // Health part
     public void reduceHealth(int damage) {
         health -= damage;
     }
+    public double getHealthRatio() { return health/maxHealth; }
     // If still, the object won't move
     public void applyVector() {
         // Rotation setting
