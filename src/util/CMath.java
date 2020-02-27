@@ -12,8 +12,8 @@ public class CMath {
     public static Vector3f vectorByXYZ(double x, double y, double z) {
         return new Vector3f((float)x / GlobalConst.TARGET_FRAME, (float)y / GlobalConst.TARGET_FRAME, (float)z / GlobalConst.TARGET_FRAME);
     }
-    public static Point3f getRandomCentre() {
-        return new Point3f(((float) Math.random() * GlobalConst.BOUNDARY_WIDTH + GlobalConst.BOUNDARY_X_START), 0, 0);
+    public static Point3f getRandomCentre(int y) {
+        return new Point3f(((float) Math.random() * GlobalConst.BOUNDARY_WIDTH + GlobalConst.BOUNDARY_X_START), y, 0);
     }
     public static double getAngle(GameObject o1, GameObject o2) {
         float x = o1.getCentre().getX() - o2.getCentre().getX();

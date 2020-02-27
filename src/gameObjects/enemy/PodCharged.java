@@ -23,12 +23,12 @@ public class PodCharged extends EnemyObject {
     public void fire(CopyOnWriteArrayList<BulletObject> EBulletList, PlayerObject player) {
         if (cd < 800 && cd > 0 && cd % 4 == 0) {
             if (bulletAngle == 0) bulletAngle = (int)CMath.getAngle(this, player);
-            EBulletList.add(new BulletObject(energyBall, 20, 20, CMath.vectorByAngle(-100 * intensity, bulletAngle), this.getNewCentre()));
+            EBulletList.add(new BulletObject(energyBallY, 20, 20, CMath.vectorByAngle(-100 * intensity, bulletAngle), this.getNewCentre()));
             bulletAngle += 20;
         }
         if (cd > 860 && cd % 90 == 0) {
             bulletAngle = (int)CMath.getAngle(this, player);
-            EBulletList.add(new BulletObject(energyBall, 20, 20, CMath.vectorByAngle(-100 * intensity, bulletAngle), this.getNewCentre()));
+            EBulletList.add(new BulletObject(energyBallY, 20, 20, CMath.vectorByAngle(-100 * intensity, bulletAngle), this.getNewCentre()));
         }
         if (cd < 0) cd = sDefaultCd;
         cd -= 1;

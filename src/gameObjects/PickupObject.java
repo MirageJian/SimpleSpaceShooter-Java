@@ -4,13 +4,13 @@ import settings.GlobalConst;
 import util.*;
 
 public class PickupObject extends GameObject {
-    private static GameResource shieldRes = new GameResource("res/shield_pickup.png", 46 ,49);
-    private static GameResource weaponRes = new GameResource("res/weapon_pickup.png", 50, 50);
+    private static GameResource shieldRes = new GameResource("res/shield_pickup.png", 100 ,100, "sound/item_pickup.wav");
+    private static GameResource weaponRes = new GameResource("res/weapon_pickup.png", 100, 100, "sound/item_pickup.wav");
     private Vector3f pickupVector;
     private boolean isShield;
 
     private PickupObject(GameResource res, Point3f centre, boolean isShield) {
-        super(res, 30, 30, null);
+        super(res, 40, 40, null);
         setCentre(centre);
         pickupVector = CMath.vectorByAngle(-100, Math.random() * 360);
         this.isShield = isShield;

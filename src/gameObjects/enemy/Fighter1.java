@@ -4,19 +4,18 @@ import gameObjects.BulletObject;
 import gameObjects.PlayerObject;
 import util.CMath;
 import util.GameResource;
-import util.Vector3f;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Fighter1 extends EnemyObject {
     private static GameResource resource = new GameResource("res/fighter1.png", 66, 92);
     private int bulletAngle = 0;
-    private final static int sDefaultCd = 60;
+    private final static int sDefaultCd = 120;
     private int fireTimes;
     private int intensity;
 
     public Fighter1(int intensity) {
-        super(resource,66, 92, 1_000, CMath.vectorByXYZ(0, -100, 0), 2000, sDefaultCd);
+        super(resource,66, 92, 1_000 * intensity, CMath.vectorByXYZ(0, -100, 0), 2000, sDefaultCd);
         this.intensity = intensity;
         this.fireTimes = intensity;
     }
@@ -25,11 +24,11 @@ public class Fighter1 extends EnemyObject {
     public void fire(CopyOnWriteArrayList<BulletObject> EBulletList, PlayerObject player) {
         double angle = CMath.getAngle(this, player);
         if (cd <= 0 && fireTimes > 0) {
-            EBulletList.add(new BulletObject(eBullet2, 45, 15, CMath.vectorByAngle(-150, angle), this.getNewCentre())
+            EBulletList.add(new BulletObject(lBullet, 45, 15, CMath.vectorByAngle(-150 * intensity, angle), this.getNewCentre())
                     .setRotation(BulletObject.class, Math.toRadians(-angle + 180)));
-            EBulletList.add(new BulletObject(eBullet2, 45, 15, CMath.vectorByAngle(-150, angle + 15), this.getNewCentre())
+            EBulletList.add(new BulletObject(lBullet, 45, 15, CMath.vectorByAngle(-150 * intensity, angle + 15), this.getNewCentre())
                     .setRotation(BulletObject.class, Math.toRadians(-angle + 180 - 15)));
-            EBulletList.add(new BulletObject(eBullet2, 45, 15, CMath.vectorByAngle(-150, angle - 15), this.getNewCentre())
+            EBulletList.add(new BulletObject(lBullet, 45, 15, CMath.vectorByAngle(-150 * intensity, angle - 15), this.getNewCentre())
                     .setRotation(BulletObject.class, Math.toRadians(-angle + 180 + 15)));
         }
         if (cd > 0) cd -= intensity;
@@ -37,6 +36,5 @@ public class Fighter1 extends EnemyObject {
             cd = sDefaultCd;
             fireTimes --;
         }
-
     }
 }

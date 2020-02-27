@@ -14,9 +14,9 @@ public class GlobalConst {
 
     public static final int LAYOUT_WIDTH = 800;
     public static final int LAYOUT_HEIGHT = 800;
-    public static final int BOUNDARY_WIDTH = 700;
+    public static final int BOUNDARY_WIDTH = 600;
 //    public static final int BOUNDARY_HEIGHT = 900;
-    public static final int BOUNDARY_X_START = 50;
+    public static final int BOUNDARY_X_START = 100;
 //    public static final int BOUNDARY_Y_START = 50;
 
 }

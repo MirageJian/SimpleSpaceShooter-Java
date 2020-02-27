@@ -1,11 +1,8 @@
 import gameObjects.BulletObject;
 import gameObjects.EffectObject;
 import gameObjects.PickupObject;
-import gameObjects.enemy.EnemyObject;
+import gameObjects.enemy.*;
 import gameObjects.PlayerObject;
-import gameObjects.enemy.Fighter1;
-import gameObjects.enemy.PodCharged;
-import gameObjects.enemy.UfoEnemy;
 import settings.WeaponTypes;
 import settings.GlobalConst;
 import util.CMath;
@@ -92,8 +89,14 @@ public class GameLogic {
         for (PickupObject pickup : world.getPickupList()) {
             // Pickup moves
             pickup.applyVector();
-            if (pickup.isContact(world.getPlayer())) world.getPickupList().remove(pickup);
-            else if (world.getP2() != null && pickup.isContact(world.getP2())) world.getPickupList().remove(pickup);
+            if (pickup.isContact(world.getPlayer())) {
+                world.getPickupList().remove(pickup);
+                pickup.resource.startSound();
+            }
+            else if (world.getP2() != null && pickup.isContact(world.getP2())) {
+                world.getPickupList().remove(pickup);
+                pickup.resource.startSound();
+            }
         }
         // Reduce shield time
         world.getPlayer().weakenShield();
@@ -268,6 +271,23 @@ public class GameLogic {
         }
         if (CMath.timeTrigger(cuFrame, 80, 90, 0.5)) {
             world.getEnemies().add(new UfoEnemy(intensity));
+        }
+        if (CMath.timeTrigger(cuFrame, 91)) {
+            world.getEnemies().add(new DevilRay(intensity));
+        }
+        if (CMath.timeTrigger(cuFrame, 100, 120, 0.5)) {
+            world.getEnemies().add(new Drone(intensity));
+        }
+        // Final boss
+        MechaBody mecha = new MechaBody(intensity);
+        if (CMath.timeTrigger(cuFrame, 120)) {
+            world.getEnemies().add(mecha);
+        }
+        if (CMath.timeTrigger(cuFrame, 130, 150 , 2)) {
+            mecha.createHammer(world.getEnemies());
+        }
+        if (CMath.timeTrigger(cuFrame, 160)) {
+            mecha.create8Hammer(world.getEnemies());
         }
     }
 }

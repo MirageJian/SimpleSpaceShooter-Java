@@ -9,6 +9,7 @@ import util.Point3f;
 public class LaserObject extends GameObject {
     public boolean isOn = false;
     private int laserLv = 1;
+    private final static int MAX_LV = 16;
 
     public LaserObject(GameResource gameResource, int width, int height, PlayerObject player) {
         super(gameResource, width, height, null);
@@ -17,10 +18,10 @@ public class LaserObject extends GameObject {
 
     // Weapon upgrade method
     public void laserUpgrade() {
-        int maxLv = 10;
-        if (laserLv < maxLv) {
+
+        if (laserLv < MAX_LV) {
             laserLv++;
-            setWidth((int)(1.26 * getWidth()));
+            setWidth((int)(1.2 * getWidth()));
         }
     }
 

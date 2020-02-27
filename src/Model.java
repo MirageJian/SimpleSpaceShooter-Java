@@ -72,6 +72,7 @@ public class Model {
     // Player explosion
     public GameResource explosionRes;
     public GameResource explosionEnemy;
+    public GameResource p2Res;
 
     public Model() {
         // Background
@@ -85,6 +86,7 @@ public class Model {
         shieldResource = new GameResource("res/shield2.png", 135, 133);
         explosionRes = new GameResource("res/exp_player.png", 64,64);
         explosionEnemy = new GameResource("res/explosion_enemy.png", 32,32, "sound/explosion_enemy.wav");
+        p2Res = new GameResource("res/ship2.png", 125, 140, "sound/player_explosion.wav");
     }
     // Setup game world, or The method reset the whole game
     void resetWorld() {
@@ -142,7 +144,7 @@ public class Model {
         return p2;
     }
     public void setP2() {
-        this.p2 = new PlayerObject(new GameResource("res/ship2.png", 125, 140), 50, 56, new Point3f(GlobalConst.LAYOUT_WIDTH/3f, GlobalConst.LAYOUT_HEIGHT/2f, 0));
+        this.p2 = new PlayerObject(p2Res, 50, 56, new Point3f(GlobalConst.LAYOUT_WIDTH/3f, GlobalConst.LAYOUT_HEIGHT/2f, 0));
     }
 }
 

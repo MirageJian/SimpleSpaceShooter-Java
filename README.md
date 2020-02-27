@@ -22,6 +22,8 @@ Explosion [Link](https://opengameart.org/content/explosion)
 
 Background [Link](https://opengameart.org/content/stars-parallax-backgrounds)
 
+[Pickups](https://opengameart.org/content/pickup-items-icons)
+
 ## Sound Resources
 
 Main sources from [Opengameart](http://opengameart.org) as well
@@ -93,8 +95,6 @@ Engine fire, bullet direction.
 **Weapon System**: Player can use R or Right mouse button to change weapon.
 
 ### TODO
-
-Pickups pick effect (Sound)
 
 Game Intergraty
 
