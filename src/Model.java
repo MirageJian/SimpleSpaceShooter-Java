@@ -1,6 +1,7 @@
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import gameObjects.BulletObject;
+import gameObjects.EffectObject;
 import gameObjects.PickupObject;
 import gameObjects.enemy.EnemyObject;
 import gameObjects.PlayerObject;
@@ -32,19 +33,19 @@ SOFTWARE.
    (MIT LICENSE ) e.g do what you want with this :-) 
  */
 public class Model {
-    private boolean isGameEnd = false;
-    private int score = 0;
+    private boolean isGameEnd;
+    private int score;
     // Game Objects
     private PlayerObject player;
     private PlayerObject p2 = null; // Player 2
-    // Last contact Object for health display
-    private EnemyObject lastContact;
-    private CopyOnWriteArrayList<EnemyObject> EnemiesList = new CopyOnWriteArrayList<>();
-    private CopyOnWriteArrayList<BulletObject> BulletList = new CopyOnWriteArrayList<>();
+    private CopyOnWriteArrayList<EnemyObject> EnemiesList;
+    private CopyOnWriteArrayList<BulletObject> BulletList;
     // Enemy Bullet list
-    private CopyOnWriteArrayList<BulletObject> eBulletList = new CopyOnWriteArrayList<>();
+    private CopyOnWriteArrayList<BulletObject> eBulletList;
     // Pickup objects
-    private CopyOnWriteArrayList<PickupObject> pickupList = new CopyOnWriteArrayList<>();
+    private CopyOnWriteArrayList<PickupObject> pickupList;
+    // Effect and explosion List
+    private CopyOnWriteArrayList<EffectObject> effectList;
     // Game logic class
     private GameLogic gameLogic;
     // Score UI Numbers
@@ -70,23 +71,35 @@ public class Model {
     public GameResource bgEffectResource;
     // Player explosion
     public GameResource explosionRes;
+    public GameResource explosionEnemy;
 
     public Model() {
-        //setup game world
         // Background
-        backgroundResource = new GameResource("res/BG_1080_3838.png");
+        backgroundResource = new GameResource("res/BG_1080_3838.png", 3838, 1080, "sound/space.wav");
         bgEffectResource = new GameResource("res/BG_Effect_1000.png", 1000, 2000);
         //Player
-        playerResource = new GameResource("res/player_750_160.png");
-        player = new PlayerObject(playerResource, 50, 50, new Point3f(GlobalConst.LAYOUT_WIDTH/2f, GlobalConst.LAYOUT_HEIGHT/2f, 0));
+        playerResource = new GameResource("res/player_750_160.png", 125, 160, "sound/player_explosion.wav");
         // Bullets
         bulletResource = new GameResource("res/Player_Bullet_76_18(18-15-10).png", 10, 18);
         // Laser has the same centre as player
         shieldResource = new GameResource("res/shield2.png", 135, 133);
         explosionRes = new GameResource("res/exp_player.png", 64,64);
+        explosionEnemy = new GameResource("res/explosion_enemy.png", 32,32, "sound/explosion_enemy.wav");
+    }
+    // Setup game world, or The method reset the whole game
+    void resetWorld() {
+        backgroundResource.loopSound();
+        isGameEnd = false;
+        score = 0;
+        player = new PlayerObject(playerResource, 50, 50, new Point3f(GlobalConst.LAYOUT_WIDTH/2f, GlobalConst.LAYOUT_HEIGHT/2f, 0));
+        EnemiesList = new CopyOnWriteArrayList<>();
+        BulletList = new CopyOnWriteArrayList<>();
+        eBulletList = new CopyOnWriteArrayList<>();
+        pickupList = new CopyOnWriteArrayList<>();
+        effectList = new CopyOnWriteArrayList<>();
         gameLogic = new GameLogic(this);
     }
-
+    // Getter Setter
     public PlayerObject getPlayer() {
         return player;
     }
@@ -102,6 +115,9 @@ public class Model {
     public CopyOnWriteArrayList<PickupObject> getPickupList() {
         return pickupList;
     }
+    public CopyOnWriteArrayList<EffectObject> getEffectList() {
+        return effectList;
+    }
     // add score for enemy object
     void addScore(EnemyObject object) {
         score += object.getScore();
@@ -113,37 +129,20 @@ public class Model {
     public boolean isGameEnd() {
         return isGameEnd;
     }
-    public void setGameEnd(boolean gameEnd) {
-        isGameEnd = gameEnd;
+    public void setGameEnd() {
+        backgroundResource.stopSound();
+        isGameEnd = true;
         player = null;
         p2 = null;
     }
     public GameLogic getGameLogic() {
         return gameLogic;
     }
-    public EnemyObject getLastContact() {
-        return lastContact;
-    }
-    public void setLastContact(EnemyObject lastContact) {
-        this.lastContact = lastContact;
-    }
     public PlayerObject getP2() {
         return p2;
     }
     public void setP2() {
         this.p2 = new PlayerObject(new GameResource("res/ship2.png", 125, 140), 50, 56, new Point3f(GlobalConst.LAYOUT_WIDTH/3f, GlobalConst.LAYOUT_HEIGHT/2f, 0));
-    }
-
-    // The method reset the whole game
-    void resetWorld() {
-        isGameEnd = false;
-        score = 0;
-        player = new PlayerObject(playerResource, 50, 50, new Point3f(GlobalConst.LAYOUT_WIDTH/2f, GlobalConst.LAYOUT_HEIGHT/2f, 0));
-        EnemiesList = new CopyOnWriteArrayList<>();
-        BulletList = new CopyOnWriteArrayList<>();
-        eBulletList = new CopyOnWriteArrayList<>();
-        pickupList = new CopyOnWriteArrayList<>();
-        gameLogic = new GameLogic(this);
     }
 }
 

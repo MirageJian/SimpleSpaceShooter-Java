@@ -2,7 +2,7 @@
 
 It is based on a 'Game Template'.
 
-## Resource
+## Graphics Resources
 
 Main source of this game: [Opengameart](http://opengameart.org) 
 
@@ -21,4 +21,91 @@ Numbers [Link](https://opengameart.org/content/numbers-collection)
 Explosion [Link](https://opengameart.org/content/explosion)
 
 Background [Link](https://opengameart.org/content/stars-parallax-backgrounds)
-## Feature
+
+## Sound Resources
+
+Main sources from [Opengameart](http://opengameart.org) as well
+
+[Start Screen Background Music Orchestral](https://opengameart.org/content/space-orchestral)
+
+[Background Music](https://opengameart.org/content/space-1)
+
+[Player Explosion](https://opengameart.org/content/explosion-0) 
+
+[Laser hit](https://opengameart.org/content/force-field-electric-hum)
+
+[Pickup when it is picked up](https://opengameart.org/content/positive-item-pickup-yo-frankie)
+
+[Enemy Fire](https://opengameart.org/content/q009s-weapon-sounds)
+
+## Other Resources
+
+[Mouse Control Source Code](https://www.gamedev.net/tutorials/programming/general-and-gameplay-programming/java-games-keyboard-and-mouse-r2439/)
+
+## Introduction
+
+This is very simple shooter game. It has 2 game modes, single and double player. More instruction in the first screen of Game.
+
+### Textures
+
+Changing background, and make it move. Make it look good and simulate flying
+
+Scrolling background. Change almost all texture.
+
+Engine fire, bullet direction.
+
+### Feature
+
+**General**: Modify the whole structure, different class, abstract class for `GameObject` and `EnemyObject`.
+
+**Upgrade expandability**: Global Const for game basic config, such as speed of object and frame rate. CMath library.
+
+**Optimization**: Game Resource is the object for Game Object. It stores the resource that loaded before user enter the game. Make game more smooth than original one.
+
+**Bullets fire**: Fire cooldown period. Fire angle is different. Bullets will remove after reach boundaries.
+
+**Pickup system**: there are 2 types of pickups. Pickups will not beyond the boundaries. Enemy died will generate pickup. When it reaches boundaries, it will rebound to opposite direction.
+
+**Weapon upgrade system**: Bullet and laser has nineth level of weapon. Each level increase damage/numbers and appearance.
+
+**Health system**: Every enemy has health. There will die when heal go below 0.
+
+**Enemy fire**: Enemies have different bullet pattern, which will be changed as game time increases.
+
+### Integrity:
+
+**Smoother Game**: It can reach 60 frames per second.
+
+**Score**: The score exists on the top right of screen
+
+**Start and end**: Game has start and end, and it has restart screen.
+
+**Game process control**: A method for game process, the difficulty will increase with time went by.
+
+**Instruction**: Help in start page, key instruction. Score display how to restart
+
+### Multiple Control
+
+**Two Control**: One uses keyboard, another one uses mouse.
+
+**Mouse Speed Limit**: For mouse control, there is speed limit.
+
+**Weapon System**: Player can use R or Right mouse button to change weapon.
+
+### TODO
+
+Pickups pick effect (Sound)
+
+Game Intergraty
+
+Bullet/laser hit effect (Sound) (Laser deals with more damage)
+
+Player Bullet fire Sound
+
+Enemy Bullets fire Sound
+
+### Consideration Features
+
+Ability for laser and bullets.
+
+Make laser an ultimate skill, 5s cool down time.

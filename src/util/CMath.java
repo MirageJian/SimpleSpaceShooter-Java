@@ -40,6 +40,9 @@ public class CMath {
         return (int)(second * GlobalConst.TARGET_FRAME);
     }
     public static boolean binaryRandom() {
-        return Math.random() * 9 >= 5;
+        return Math.random() * 10 > 5;
+    }
+    public static boolean lowChanceRandom() {
+        return Math.random() * 10 > 6;
     }
 }

@@ -6,7 +6,7 @@ import util.*;
 // Player weapon object: Bullet
 // Enemy bullet
 public class BulletObject extends GameObject {
-    public int bulletDamage = 20; // Per Bullet
+    public int bulletDamage = 34; // Per Bullet
     private Vector3f bulletVector;
     private int textureStart = 0;
     // Enemy bullets

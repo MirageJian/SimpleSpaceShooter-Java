@@ -1,20 +1,15 @@
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 
 import settings.GlobalConst;
 import ui.Button;
@@ -60,6 +55,8 @@ public class MainWindow {
     private JButton startMenuButton;
     private JButton doublePlayerButton;
     private JLabel endText;
+    // Sound file
+    private Clip startClip;
 
     public MainWindow() {
         frame.setSize(GlobalConst.LAYOUT_WIDTH + 14, GlobalConst.LAYOUT_HEIGHT + 37);  // you can customise this later and adapt it to change on size.
@@ -93,11 +90,14 @@ public class MainWindow {
         // loading background image Set background
         File BackroundToLoad = new File("res/startscreen.png");  //should work okay on OSX and Linux but check if you have issues depending your eclipse install or if your running this without an IDE
         try {
+            // Start screen texture
             BufferedImage myPicture = ImageIO.read(BackroundToLoad);
             BackgroundImageForStartMenu = new JLabel(new ImageIcon(myPicture));
             BackgroundImageForStartMenu.setBounds(0, 0, GlobalConst.LAYOUT_WIDTH, GlobalConst.LAYOUT_HEIGHT);
             frame.add(BackgroundImageForStartMenu);
-        } catch (IOException e) {
+            // Stream can only have one
+            startClip = playOrchestral();
+        } catch (Exception e) {
             e.printStackTrace();
         }
         frame.add(canvas);
@@ -121,16 +121,14 @@ public class MainWindow {
         doublePlayerButton.setVisible(false);
         BackgroundImageForStartMenu.setVisible(false);
         canvas.setVisible(true);
+        // Set some listeners for canvas
         canvas.addKeyListener(Controller.getInstance());    //adding the controller to the Canvas
         canvas.addMouseMotionListener(MouseControl.getInstance());
         canvas.addMouseListener(MouseControl.getInstance());    //adding the Mouse Controller to the Canvas
         canvas.requestFocusInWindow();   // making sure that the Canvas is in focus so keyboard input will be taking in .
-        // If game started, reset it every time.
-        if (startGame) {
-            gameWorld.resetWorld();
-        }
-        // It will help jump help screen
-        startGame = true;
+        // Reset game every time.
+        startClip.stop();
+        gameWorld.resetWorld();
         // Use a new Thread for game loop
         Thread thread = new Thread(() -> {
             // not nice but remember we do just want to keep looping till the end.  // this could be replaced by a thread but again we want to keep things simple
@@ -139,7 +137,8 @@ public class MainWindow {
                 long FrameCheck = System.currentTimeMillis() + (long) GlobalConst.INTERVAL_PER_FRAME;
                 //wait till next time step
                 while (FrameCheck > System.currentTimeMillis()) { }
-                if (startGame && !gameWorld.isGameEnd()) {
+                // Check whether the game is end or not
+                if (!gameWorld.isGameEnd()) {
                     gameloop();
                 } else break;
                 //UNIT test to see if framerate matches
@@ -154,6 +153,23 @@ public class MainWindow {
         startMenuButton.setVisible(true);
         doublePlayerButton.setVisible(true);
         endText.setVisible(true);
+        // Set frame and start
+        startClip.setFramePosition(0);
+        startClip.start();
+    }
+
+    private Clip playOrchestral() {
+        // Sound of Start and End screen
+        try {
+            // Same as clip, it should be only one
+            Clip clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(new File("sound/space-orchestral.wav")));
+            clip.start();
+            return clip;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
 

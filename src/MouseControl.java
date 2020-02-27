@@ -5,7 +5,10 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-
+/**
+ * The Origin Source Code from
+ * https://www.gamedev.net/tutorials/programming/general-and-gameplay-programming/java-games-keyboard-and-mouse-r2439/
+ * */
 public class MouseControl implements MouseListener, MouseMotionListener {
     private static final int BUTTON_COUNT = 3;
     // Polled position of the mouse cursor

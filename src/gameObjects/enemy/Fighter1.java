@@ -9,15 +9,14 @@ import util.Vector3f;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Fighter1 extends EnemyObject {
-    private static GameResource resource = new GameResource("res/fighter1.png", 92, 66);
+    private static GameResource resource = new GameResource("res/fighter1.png", 66, 92);
     private int bulletAngle = 0;
     private final static int sDefaultCd = 60;
     private int fireTimes;
     private int intensity;
 
     public Fighter1(int intensity) {
-        super(resource,92, 66, 1_000, CMath.vectorByXYZ(0, -100, 0), 2000, sDefaultCd);
-        setRotation(Math.toRadians(90));
+        super(resource,66, 92, 1_000, CMath.vectorByXYZ(0, -100, 0), 2000, sDefaultCd);
         this.intensity = intensity;
         this.fireTimes = intensity;
     }

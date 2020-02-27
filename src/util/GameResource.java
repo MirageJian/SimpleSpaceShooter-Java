@@ -1,15 +1,22 @@
 package util;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
 public class GameResource {
     // When resource didn't load, this will be loaded
-    static GameResource sBlankTexture = new GameResource("res/blankSprite.png");
-
+    public static GameResource sBlankTexture = new GameResource("res/blankSprite.png");
+    // Texture
     public Image imageTexture;
+    // Sound
+    AudioInputStream ais;
+    private Clip sound;
+    // Draw size or Texture size
     public int drawWidth;
     public int drawHeight;
     // Different direction of bullets is different. For player
@@ -29,8 +36,43 @@ public class GameResource {
         this.drawWidth = drawWidth;
         this.drawHeight = drawHeight;
     }
+    public GameResource(String texturePath, int drawWidth, int drawHeight, String soundPath) {
+        this(texturePath, drawWidth, drawHeight);
+        // Get sound file
+        try {
+            ais = AudioSystem.getAudioInputStream(new File(soundPath));
+            sound = AudioSystem.getClip();
+            sound.open(ais);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public GameResource(String texturePath, int drawWidth, int drawHeight, int textureStart) {
         this(texturePath, drawWidth, drawHeight);
         this.textureStart = textureStart;
+    }
+    // This is the place for sound playing. It's unstoppable
+    public void startSound() {
+        if (sound.isRunning()){
+            sound.stop();
+        }
+        sound.setFramePosition(0);
+        sound.start();
+        try {
+            Clip newClip = AudioSystem.getClip();
+            newClip.open(ais);
+            newClip.setFramePosition(0);
+            newClip.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    // If loop sound, it means the sound will play repeatedly until call stopSound()
+    public void loopSound() {
+        sound.setFramePosition(0);
+        sound.loop(Clip.LOOP_CONTINUOUSLY);
+    }
+    public void stopSound() {
+        sound.stop();
     }
 }

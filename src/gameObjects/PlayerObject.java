@@ -16,7 +16,7 @@ public class PlayerObject extends GameObject {
     private int shieldTime = 0;
     public final static int S_EXTRA_WIDTH = 40;
     // Death states: -1 is alive, >0 is dying, ==0 is dead
-    public int dyingTime = -1;
+    private int dyingTime = -1;
 
     public PlayerObject(GameResource gameResource, int width, int height, Point3f centre) {
         super(gameResource, width, height, centre);
@@ -29,9 +29,11 @@ public class PlayerObject extends GameObject {
         if (bulletClodDown == 0) {
             for (int i = 0; i < bulletLv; i++) {
                 int angle = i * 5; // Vector angle is the direction of firing, angle is the direction of drawing
+                // Left bullets
                 bullets.add(new BulletObject(resource, 10, 18, this, 90 + angle)
                         .setRotation(BulletObject.class, Math.toRadians(-angle)));
                 if (i != 0) {
+                    // Right bullets
                     bullets.add(new BulletObject(resource, 10, 18, this, 90 - angle)
                             .setRotation(BulletObject.class, Math.toRadians(angle)));
                 }
@@ -76,6 +78,15 @@ public class PlayerObject extends GameObject {
     }
 
     // Death methods
+    public int getDyingTime() {
+        return dyingTime;
+    }
+    // Set dying time and do some actions
+    public void setDyingTime() {
+        resource.startSound();
+        this.dyingTime = 167;
+    }
+
     public boolean isDying() {
         return dyingTime > 0;
     }

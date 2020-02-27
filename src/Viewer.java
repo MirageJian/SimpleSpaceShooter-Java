@@ -1,7 +1,4 @@
-import gameObjects.BulletObject;
-import gameObjects.LaserObject;
-import gameObjects.PickupObject;
-import gameObjects.PlayerObject;
+import gameObjects.*;
 import gameObjects.enemy.EnemyObject;
 import settings.GlobalConst;
 import util.GameObject;
@@ -82,6 +79,8 @@ public class Viewer extends JPanel {
             drawEnemiesAndBullet((int) enemy.getCentre().getX(), (int) enemy.getCentre().getY(), enemy, g2d);
             if (enemy.getHealthRatio() < 1) drawHealthBar(g2d, enemy);
         });
+        // Draw Effects
+        gameWorld.getEffectList().forEach(effectObject -> drawEffect(effectObject, g2d));
         //Draw player 1
         drawPlayer(gameWorld.getPlayer(), g2d);
         // Draw Player 2
@@ -153,6 +152,17 @@ public class Viewer extends JPanel {
         }
     }
 
+    private void drawEffect(EffectObject effect, Graphics2D g2d) {
+        int x = (int) effect.getCentre().getX();
+        int y = (int) effect.getCentre().getY();
+        int width = effect.getWidth();
+        int height = effect.getHeight();
+        // Current frame is like lasting time.
+        int current = effect.getCurrentFrame() / effect.getLastTimePerF() % effect.getFrameNum() * effect.resource.drawWidth;
+        g2d.drawImage(effect.getTexture(), x - width / 2, y - height / 2, x + width / 2, y + height / 2,
+                current, 0, current + effect.resource.drawWidth, effect.resource.drawHeight, null);
+    }
+
     private void drawPlayer(PlayerObject player, Graphics2D g2d) {
         if (player == null) return;
         //Draw player Game Object
@@ -167,7 +177,7 @@ public class Viewer extends JPanel {
         int currentPositionInAnimation = CurrentAnimationTime % 6 * 125; //slows down animation so every 10 frames we get another frame so every 100ms
         if (player.isDying()) {
             // Start draw death animation
-            int posAni = player.dyingTime > 160 ? (player.dyingTime-160)%16:16-player.dyingTime/10%16;
+            int posAni = player.getDyingTime() > 160 ? (player.getDyingTime()-160)%16:16-player.getDyingTime()/10%16;
             g2d.drawImage(gameWorld.explosionRes.imageTexture,x - width / 2, y - height / 2, x + width / 2, y + height / 2,
                     posAni % 4 * 64, posAni / 4 * 64, posAni % 4 * 64 + 64, posAni / 4 * 64 + 64, null);
             player.minusDyingTime();

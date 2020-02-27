@@ -1,4 +1,5 @@
 import gameObjects.BulletObject;
+import gameObjects.EffectObject;
 import gameObjects.PickupObject;
 import gameObjects.enemy.EnemyObject;
 import gameObjects.PlayerObject;
@@ -26,9 +27,9 @@ public class GameLogic {
             // Player 2 Logic
             if (!world.getP2().isDying() && !world.getP2().isDead()) p2Logic();
             // Game Over
-            if (world.getP2().isDead() && world.getPlayer().isDead()) world.setGameEnd(true);
+            if (world.getP2().isDead() && world.getPlayer().isDead()) world.setGameEnd();
         } // Game Over
-        else if (world.getPlayer().isDead()) world.setGameEnd(true);
+        else if (world.getPlayer().isDead()) world.setGameEnd();
         if (world.isGameEnd()) return;
         // Pickup objects Logic
         pickupLogic();
@@ -39,6 +40,7 @@ public class GameLogic {
         bulletLogic();
         // interactions between objects
         gameLogic();
+        effectLogic();
         // Game process
         gameProcess();
         frameCount += 1;
@@ -55,7 +57,6 @@ public class GameLogic {
                 if (Math.abs(temp.getCentre().getX() - bullet.getCentre().getX()) < temp.getWidth() / 2f
                         && Math.abs(temp.getCentre().getY() - bullet.getCentre().getY()) < temp.getHeight() / 2f) {
                     // Damage part
-                    world.setLastContact(temp);
                     temp.reduceHealth(bullet.bulletDamage);
                     world.getBullets().remove(bullet);
                 }
@@ -68,7 +69,10 @@ public class GameLogic {
             if (temp.isDead()) {
                 world.getEnemies().remove(temp);
                 world.addScore(temp);
-                world.getPickupList().add(PickupObject.createPickup(temp.getNewCentre()));
+                world.getEffectList().add(new EffectObject(world.explosionEnemy, temp, 10, 6));
+                // There is a possibility to generate pickup
+                if (CMath.lowChanceRandom())
+                    world.getPickupList().add(PickupObject.createPickup(temp.getNewCentre()));
             }
         }
     }
@@ -79,7 +83,6 @@ public class GameLogic {
             if (Math.abs(enemy.getCentre().getX() - player.laser.getCentre().getX()) < enemy.getWidth() / 2f
                     && height < player.laser.getHeight() && height > 0) {
                 // Set the contact object for laser
-                world.setLastContact(enemy);
                 enemy.reduceHealth(player.laser.getDamage());
             }
         }
@@ -136,7 +139,7 @@ public class GameLogic {
                 world.getEBulletList().remove(eb);
                 player.laser.isOn = false;
                 // Set death time
-                player.dyingTime = 167;
+                player.setDyingTime();
             }
         }
     }
@@ -156,6 +159,10 @@ public class GameLogic {
         // Reduce cool down time
         if (world.getPlayer().bulletClodDown > 0) world.getPlayer().bulletClodDown--;
         if (world.getP2() != null && world.getP2().bulletClodDown > 0) world.getP2().bulletClodDown--;
+    }
+
+    private void effectLogic() {
+        world.getEffectList().removeIf(EffectObject::frameCheck);
     }
 
     private void playerLogic() {
@@ -259,6 +266,8 @@ public class GameLogic {
         if (CMath.timeTrigger(cuFrame, 60, 80, 2)) {
             world.getEnemies().add(new Fighter1(intensity));
         }
-
+        if (CMath.timeTrigger(cuFrame, 80, 90, 0.5)) {
+            world.getEnemies().add(new UfoEnemy(intensity));
+        }
     }
 }
