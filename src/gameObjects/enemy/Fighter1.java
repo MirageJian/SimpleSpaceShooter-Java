@@ -9,7 +9,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Fighter1 extends EnemyObject {
     private static GameResource resource = new GameResource("res/fighter1.png", 66, 92);
-    private int bulletAngle = 0;
     private final static int sDefaultCd = 120;
     private int fireTimes;
     private int intensity;

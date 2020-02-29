@@ -79,9 +79,6 @@ public class Viewer extends JPanel {
             drawEnemiesAndBullet((int) enemy.getCentre().getX(), (int) enemy.getCentre().getY(), enemy, g2d);
             if (enemy.getHealthRatio() < 1) drawHealthBar(g2d, enemy);
         });
-        // Draw laser for two players
-        if (gameWorld.getPlayer() != null)drawLaser(gameWorld.getPlayer(), g2d);
-        if (gameWorld.getP2() != null) drawLaser(gameWorld.getP2(), g2d);
         // Draw Effects on the top of laser
         gameWorld.getEffectList().forEach(effectObject -> drawEffect(effectObject, g2d));
         //Draw player 1
@@ -93,7 +90,6 @@ public class Viewer extends JPanel {
 //        if (gameWorld.isGameEnd) drawEndScreen(g2d);
         // Score UI
         drawScore(g2d);
-        drawInfo(g2d);
     }
     private void rotate(Graphics2D g2d, GameObject gameObject, int x, int y) {
         AffineTransform tx = AffineTransform.getRotateInstance(gameObject.getRotation(), x, y);
@@ -178,6 +174,8 @@ public class Viewer extends JPanel {
         int y = (int) player.getCentre().getY();
         int width = player.getWidth();
         int height = player.getHeight();
+        // Draw laser
+        drawLaser(player, g2d);
         //The spirte is 32x32 pixel wide and 4 of them are placed together so we need to grab a different one each time
         //remember your training :-) computer science everything starts at 0 so 32 pixels gets us to 31
         int currentPositionInAnimation = CurrentAnimationTime % 6 * 125; //slows down animation so every 10 frames we get another frame so every 100ms
@@ -232,14 +230,6 @@ public class Viewer extends JPanel {
         double health = enemy.getHealthRatio() * (enemy.getWidth() - 4);
         g2d.fillRect(x + 2, y + 2, (int) health, 4);
         g2d.setColor(backup);
-    }
-
-    private void drawInfo(Graphics2D g2d) {
-        Color backup = g2d.getColor();
-        g2d.setColor(Color.BLACK);
-        g2d.fillRect(GlobalConst.LAYOUT_WIDTH, 0, 200, GlobalConst.LAYOUT_HEIGHT);
-        g2d.setColor(Color.WHITE);
-        g2d.drawLine(GlobalConst.LAYOUT_WIDTH, 0, GlobalConst.LAYOUT_WIDTH, GlobalConst.LAYOUT_HEIGHT);
     }
 }
 

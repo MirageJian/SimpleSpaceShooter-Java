@@ -5,11 +5,7 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 public class Button extends JButton {
     public Button(String text) {
@@ -23,22 +19,19 @@ public class Button extends JButton {
         this.setBorder(compound);
         this.setFocusPainted(false);
         final JButton that = this;
-        this.getModel().addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                ButtonModel model = (ButtonModel) e.getSource();
+        this.getModel().addChangeListener(e -> {
+            ButtonModel model = (ButtonModel) e.getSource();
 //                if (model.isRollover()) {
 //                    tip1Null.setBorder(compound1);
 //                } else {
 //                    tip1Null.setBorder(compound);
 //                }
-                if (model.isPressed()) {
-                    that.setBackground(Color.WHITE);
-                    that.setForeground(Color.BLACK);
-                } else {
-                    that.setForeground(Color.WHITE);
-                    that.setBackground(Color.BLACK);
-                }
+            if (model.isPressed()) {
+                that.setBackground(Color.WHITE);
+                that.setForeground(Color.BLACK);
+            } else {
+                that.setForeground(Color.WHITE);
+                that.setBackground(Color.BLACK);
             }
         });
     }

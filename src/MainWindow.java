@@ -3,7 +3,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 
 import javax.imageio.ImageIO;
-import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
@@ -11,10 +10,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import gameObjects.PlayerObject;
 import settings.GlobalConst;
 import ui.Button;
-import ui.UIUpdater;
 import util.UnitTests;
 
 /*
@@ -52,7 +49,6 @@ public class MainWindow {
     private static Model gameWorld = new Model();
     private static Viewer canvas = new Viewer(gameWorld);
     // private static int TargetFPS = 60;
-    private static boolean startGame = false;
     private JLabel BackgroundImageForStartMenu;
     private JButton startMenuButton;
     private JButton doublePlayerButton;

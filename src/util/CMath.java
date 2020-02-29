@@ -1,6 +1,5 @@
 package util;
 
-import gameObjects.PlayerObject;
 import settings.GlobalConst;
 
 public class CMath {

@@ -70,15 +70,6 @@ public class MechaBody extends EnemyObject {
         }
     }
 
-    private void createArcSector(CopyOnWriteArrayList<BulletObject> EBulletList, double angle) {
-        if (cd % 15 == 0) {
-            EBulletList.add(new BulletObject(energyBallY, 20, 20, CMath.vectorByAngle(-100 * intensity, angle), this.getNewCentre()));
-            for (int i = 1; i < 8; i++) {
-                EBulletList.add(new BulletObject(energyBallY, 20, 20, CMath.vectorByAngle(-100 * intensity, angle + 3 * i), this.getNewCentre()));
-                EBulletList.add(new BulletObject(energyBallY, 20, 20, CMath.vectorByAngle(-100 * intensity, angle - 3 * i), this.getNewCentre()));
-            }
-        }
-    }
     // Boss will create hammers
     public void createHammer(CopyOnWriteArrayList<EnemyObject> enemies) {
         Hammer hammer = new Hammer(intensity);

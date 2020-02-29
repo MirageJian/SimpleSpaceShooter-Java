@@ -2,7 +2,6 @@ package gameObjects.enemy;
 
 import gameObjects.BulletObject;
 import gameObjects.PlayerObject;
-import settings.GlobalConst;
 import util.CMath;
 import util.GameResource;
 
@@ -10,7 +9,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class DevilRay extends EnemyObject {
     private static GameResource resource = new GameResource("res/devilray.png", 162, 128);
-    private int bulletAngle = 0;
     private final static int sDefaultCd = 4800;
     private int intensity;
 

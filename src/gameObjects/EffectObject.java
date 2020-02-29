@@ -3,8 +3,6 @@ package gameObjects;
 import util.GameObject;
 import util.GameResource;
 
-import javax.sound.sampled.Clip;
-
 public class EffectObject extends GameObject {
     // Time per frame
     private int lastTimePerF;

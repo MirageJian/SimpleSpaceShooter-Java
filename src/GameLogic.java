@@ -2,7 +2,6 @@ import gameObjects.*;
 import gameObjects.enemy.*;
 import settings.WeaponTypes;
 import settings.GlobalConst;
-import ui.UIUpdater;
 import util.CMath;
 import util.Vector3f;
 

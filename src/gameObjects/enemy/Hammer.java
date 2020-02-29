@@ -9,7 +9,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Hammer extends EnemyObject {
     private static GameResource resource = new GameResource("res/hummer.png", 95, 96);
-    private int bulletAngle = 0;
     private final static int sDefaultCd = 600;
     private int intensity;
 

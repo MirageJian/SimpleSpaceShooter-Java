@@ -10,7 +10,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class PlayerObject extends GameObject {
     public LaserObject laser;
-    public WeaponTypes currentWeapon = WeaponTypes.Laser;
+    public WeaponTypes currentWeapon = WeaponTypes.Bullet;
     public int bulletClodDown = 0;
     private int bulletLv = 1;
     private final static int MAX_LV = 16;
