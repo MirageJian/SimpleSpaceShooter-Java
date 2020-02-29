@@ -24,6 +24,8 @@ Background [Link](https://opengameart.org/content/stars-parallax-backgrounds)
 
 [Pickups](https://opengameart.org/content/pickup-items-icons)
 
+[Effect of bullet and laser](https://opengameart.org/content/explosions-2)
+
 ## Sound Resources
 
 Main sources from [Opengameart](http://opengameart.org) as well
@@ -55,6 +57,8 @@ Changing background, and make it move. Make it look good and simulate flying
 Scrolling background. Change almost all texture.
 
 Engine fire, bullet direction.
+
+**Bullet hit effect**
 
 ### Feature
 
@@ -93,16 +97,6 @@ Engine fire, bullet direction.
 **Mouse Speed Limit**: For mouse control, there is speed limit.
 
 **Weapon System**: Player can use R or Right mouse button to change weapon.
-
-### TODO
-
-Game Intergraty
-
-Bullet/laser hit effect (Sound) (Laser deals with more damage)
-
-Player Bullet fire Sound
-
-Enemy Bullets fire Sound
 
 ### Consideration Features
 

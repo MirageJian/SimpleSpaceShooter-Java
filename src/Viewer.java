@@ -79,10 +79,13 @@ public class Viewer extends JPanel {
             drawEnemiesAndBullet((int) enemy.getCentre().getX(), (int) enemy.getCentre().getY(), enemy, g2d);
             if (enemy.getHealthRatio() < 1) drawHealthBar(g2d, enemy);
         });
-        // Draw Effects
+        // Draw laser for two players
+        if (gameWorld.getPlayer() != null)drawLaser(gameWorld.getPlayer(), g2d);
+        if (gameWorld.getP2() != null) drawLaser(gameWorld.getP2(), g2d);
+        // Draw Effects on the top of laser
         gameWorld.getEffectList().forEach(effectObject -> drawEffect(effectObject, g2d));
         //Draw player 1
-        drawPlayer(gameWorld.getPlayer(), g2d);
+        if (gameWorld.getPlayer() != null)drawPlayer(gameWorld.getPlayer(), g2d);
         // Draw Player 2
         if (gameWorld.getP2() != null) drawPlayer(gameWorld.getP2(), g2d);
         //Draw Enemies' Bullets
@@ -134,8 +137,11 @@ public class Viewer extends JPanel {
             e.printStackTrace();
         }
     }
-    // This will be drawn with player
-    private void drawLaser(int x, int y, LaserObject laser, Graphics g) {
+
+    private void drawLaser(PlayerObject player, Graphics g) {
+        int x = (int) player.getCentre().getX();
+        int y = (int) player.getCentre().getY();
+        LaserObject laser = player.laser;
         if (laser.isOn) {
             GameResource resource = laser.resource;
             int current = CurrentAnimationTime % 12 * resource.drawWidth;
@@ -170,8 +176,6 @@ public class Viewer extends JPanel {
         int y = (int) player.getCentre().getY();
         int width = player.getWidth();
         int height = player.getHeight();
-        // Drawlaser first
-        drawLaser(x, y, player.laser, g2d);
         //The spirte is 32x32 pixel wide and 4 of them are placed together so we need to grab a different one each time
         //remember your training :-) computer science everything starts at 0 so 32 pixels gets us to 31
         int currentPositionInAnimation = CurrentAnimationTime % 6 * 125; //slows down animation so every 10 frames we get another frame so every 100ms
@@ -215,11 +219,7 @@ public class Viewer extends JPanel {
                     gameWorld.numbers[j].textureStart + gameWorld.numbers[j].drawWidth, gameWorld.numbers[j].drawHeight, null);
         }
     }
-    private void drawEndScreen(Graphics2D g2d) {
-        Color backup = g2d.getColor();
-        g2d.setColor(Color.BLACK);
-        g2d.fillRect(0, 0 , GlobalConst.LAYOUT_WIDTH, GlobalConst.LAYOUT_HEIGHT);
-    }
+
     private void drawHealthBar(Graphics2D g2d, EnemyObject enemy) {
         if (enemy == null) return;
         Color backup = g2d.getColor();

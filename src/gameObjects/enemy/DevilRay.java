@@ -13,10 +13,9 @@ public class DevilRay extends EnemyObject {
     private int bulletAngle = 0;
     private final static int sDefaultCd = 4800;
     private int intensity;
-    private int x = -20;
 
     public DevilRay(int intensity) {
-        super(resource,162, 128, 80_000 * intensity, CMath.vectorByXYZ(0, -10, 0), 100_000, sDefaultCd);
+        super(resource,162, 128, 50_000 * intensity, CMath.vectorByXYZ(-20, -10, 0), 100_000, sDefaultCd);
 //        setAngularV(Math.toRadians(30));
         this.intensity = intensity;
     }
@@ -55,10 +54,7 @@ public class DevilRay extends EnemyObject {
         if (cd < 0) cd = sDefaultCd;
         cd -= 1;
         // Part of control enemy move on x axis
-        int y = getCentre().getY() > 200 ? 0 : -10;
-        if (getCentre().getX() < 100)  x = 40;
-        if (getCentre().getX() > GlobalConst.LAYOUT_WIDTH - 100) x = -40;
-        enemyVector = CMath.vectorByXYZ(x, y, 0);
+        flyAndPause(angle);
     }
     // Create arc sector bullets
     private void createBullets(CopyOnWriteArrayList<BulletObject> EBulletList, double angle, int i, int offset) {

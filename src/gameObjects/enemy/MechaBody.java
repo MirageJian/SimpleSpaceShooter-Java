@@ -2,8 +2,10 @@ package gameObjects.enemy;
 
 import gameObjects.BulletObject;
 import gameObjects.PlayerObject;
+import settings.GlobalConst;
 import util.CMath;
 import util.GameResource;
+import util.Point3f;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -14,7 +16,7 @@ public class MechaBody extends EnemyObject {
     private int intensity;
 
     public MechaBody(int intensity) {
-        super(resource,118, 160, 500_000 * intensity, CMath.vectorByXYZ(0, -20, 0), 1_000_000, sDefaultCd);
+        super(resource,118, 160, 100_000 * intensity, CMath.vectorByXYZ(-10, -20, 0), 1_000_000, sDefaultCd);
         this.intensity = intensity;
     }
 
@@ -28,6 +30,8 @@ public class MechaBody extends EnemyObject {
             createArcSector(EBulletList, angle);
         if (cd < 0) cd = sDefaultCd;
         cd -= 1;
+
+        flyAndPause(angle);
     }
 
     private void createCircle(CopyOnWriteArrayList<BulletObject> EBulletList, int cd) {
@@ -39,18 +43,22 @@ public class MechaBody extends EnemyObject {
 
     private void createArcSector(CopyOnWriteArrayList<BulletObject> EBulletList, double angle) {
         if (cd % 15 == 0) {
-            EBulletList.add(new BulletObject(energyBallB, 20, 20, CMath.vectorByAngle(-100 * intensity, angle), this.getNewCentre()));
+            EBulletList.add(new BulletObject(energyBallY, 20, 20, CMath.vectorByAngle(-100 * intensity, angle), this.getNewCentre()));
             for (int i = 1; i < 8; i++) {
-                EBulletList.add(new BulletObject(energyBallB, 20, 20, CMath.vectorByAngle(-100 * intensity, angle + 3 * i), this.getNewCentre()));
-                EBulletList.add(new BulletObject(energyBallB, 20, 20, CMath.vectorByAngle(-100 * intensity, angle - 3 * i), this.getNewCentre()));
+                EBulletList.add(new BulletObject(energyBallY, 20, 20, CMath.vectorByAngle(-100 * intensity, angle + 3 * i), this.getNewCentre()));
+                EBulletList.add(new BulletObject(energyBallY, 20, 20, CMath.vectorByAngle(-100 * intensity, angle - 3 * i), this.getNewCentre()));
             }
         }
     }
 
     public void createHammer(CopyOnWriteArrayList<EnemyObject> enemies) {
-
+        Hammer hammer = new Hammer(intensity);
+        hammer.setCentre(new Point3f(getCentre().getX(), hammer.getCentre().getY(), 0));
+        enemies.add(hammer);
     }
     public void create8Hammer(CopyOnWriteArrayList<EnemyObject> enemies) {
 
     }
+
+
 }

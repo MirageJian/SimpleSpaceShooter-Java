@@ -58,14 +58,14 @@ public class GameResource {
         }
         sound.setFramePosition(0);
         sound.start();
-        try {
-            Clip newClip = AudioSystem.getClip();
-            newClip.open(ais);
-            newClip.setFramePosition(0);
-            newClip.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Clip newClip = AudioSystem.getClip();
+//            newClip.open(ais);
+//            newClip.setFramePosition(0);
+//            newClip.start();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
     // If loop sound, it means the sound will play repeatedly until call stopSound()
     public void loopSound() {
@@ -74,5 +74,8 @@ public class GameResource {
     }
     public void stopSound() {
         sound.stop();
+    }
+    public void loopSoundNonRest() {
+        sound.loop(Clip.LOOP_CONTINUOUSLY);
     }
 }

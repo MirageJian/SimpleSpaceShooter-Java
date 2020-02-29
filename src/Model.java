@@ -73,6 +73,8 @@ public class Model {
     public GameResource explosionRes;
     public GameResource explosionEnemy;
     public GameResource p2Res;
+    public GameResource bulletEf;
+    public GameResource laserEf;
 
     public Model() {
         // Background
@@ -87,6 +89,8 @@ public class Model {
         explosionRes = new GameResource("res/exp_player.png", 64,64);
         explosionEnemy = new GameResource("res/explosion_enemy.png", 32,32, "sound/explosion_enemy.wav");
         p2Res = new GameResource("res/ship2.png", 125, 140, "sound/player_explosion.wav");
+        bulletEf = new GameResource("res/bullet_effect_16_16.png", 16, 16, "sound/bullet.wav");
+        laserEf = new GameResource("res/laser_effect_16_16.png", 16, 16, "sound/laser.wav");
     }
     // Setup game world, or The method reset the whole game
     void resetWorld() {

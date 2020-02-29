@@ -3,6 +3,8 @@ package gameObjects;
 import util.GameObject;
 import util.GameResource;
 
+import javax.sound.sampled.Clip;
+
 public class EffectObject extends GameObject {
     // Time per frame
     private int lastTimePerF;
@@ -12,11 +14,15 @@ public class EffectObject extends GameObject {
     private int currentFrame = 0;
 
     public EffectObject(GameResource resource, GameObject object, int lastTimePerF, int frameNum) {
+        this(resource, object, lastTimePerF, frameNum, true);
+    }
+
+    public EffectObject(GameResource resource, GameObject object, int lastTimePerF, int frameNum, boolean startSound) {
         super(resource, object.getWidth(), object.getHeight(), null);
         this.setCentre(object.getNewCentre());
         this.lastTimePerF = lastTimePerF;
         this.frameNum = frameNum;
-        resource.startSound();
+        if (startSound) resource.startSound();
     }
 
     public int getLastTimePerF() {

@@ -74,4 +74,13 @@ public abstract class EnemyObject extends GameObject {
         this.angularV = angularV / GlobalConst.TARGET_FRAME;
     }
 
+    protected void flyAndPause(double angle) {
+        boolean isPaused = getCentre().getY() > 200;
+        float currentX = enemyVector.getX() * GlobalConst.TARGET_FRAME;
+        float x = isPaused ? currentX != 0 ? currentX : -20 : 0;
+        float y = isPaused ? 0 : enemyVector.getY() * GlobalConst.TARGET_FRAME;
+        if (isPaused && getCentre().getX() < 100)  x = 40;
+        if (isPaused && getCentre().getX() > GlobalConst.LAYOUT_WIDTH - 100) x = -40;
+        enemyVector = CMath.vectorByXYZ(x, y, 0);
+    }
 }

@@ -32,12 +32,12 @@ public class Hammer extends EnemyObject {
         cd -= 1;
     }
 
-    private void flyAndPause(double angle) {
+    protected void flyAndPause(double angle) {
         // Towards player when pausing
         setRotation(Math.toRadians(angle));
     }
 
     private void createLine(CopyOnWriteArrayList<BulletObject> EBulletList, double angle, int cd) {
-        if (cd % 5 == 0) EBulletList.add(new BulletObject(energyBallB, 20, 20, CMath.vectorByAngle(-150 * intensity, angle), this.getNewCentre()));
+        if (cd % 5 == 0) EBulletList.add(new BulletObject(energyBallG, 20, 20, CMath.vectorByAngle(-150 * intensity, angle), this.getNewCentre()));
     }
 }

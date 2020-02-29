@@ -1,8 +1,5 @@
-import gameObjects.BulletObject;
-import gameObjects.EffectObject;
-import gameObjects.PickupObject;
+import gameObjects.*;
 import gameObjects.enemy.*;
-import gameObjects.PlayerObject;
 import settings.WeaponTypes;
 import settings.GlobalConst;
 import util.CMath;
@@ -56,6 +53,10 @@ public class GameLogic {
                     // Damage part
                     temp.reduceHealth(bullet.bulletDamage);
                     world.getBullets().remove(bullet);
+                    world.getEffectList().add(new EffectObject(world.bulletEf, bullet, 1, 8) {{
+                        setWidth(20);
+                        setHeight(20);
+                    }});
                 }
             }
             // Player 1 Laser logic
@@ -81,6 +82,7 @@ public class GameLogic {
                     && height < player.laser.getHeight() && height > 0) {
                 // Set the contact object for laser
                 enemy.reduceHealth(player.laser.getDamage());
+                LaserObject.createEf(world.getEffectList(), world.laserEf, enemy, frameCount);
             }
         }
     }
@@ -195,14 +197,20 @@ public class GameLogic {
         // Whether laser is on
         if (Controller.getInstance().isKeySpacePressed()) {
             // If current weapon is laser
-            if (player.currentWeapon == WeaponTypes.Laser) player.laser.isOn = true;
+            if (player.currentWeapon == WeaponTypes.Laser) {
+                player.laser.isOn = true;
+//                world.laserEf.loopSoundNonRest();
+            }
                 // Bullet part
             else {
                 player.createBullet(world.getBullets(), world.bulletResource);
 //                Controller.getInstance().setKeySpacePressed(false);
             }
         } else {
-            if (player.currentWeapon == WeaponTypes.Laser) player.laser.isOn = false;
+            if (player.currentWeapon == WeaponTypes.Laser) {
+                player.laser.isOn = false;
+//                world.laserEf.stopSound();
+            }
         }
     }
     private void p2Logic() {
@@ -248,6 +256,7 @@ public class GameLogic {
         if (CMath.timeTrigger(cuFrame, 0, 10, 1)) {
             world.getEnemies().add(new UfoEnemy(intensity));
         }
+        // First bosses
         if (CMath.timeTrigger(cuFrame, 12)) {
             world.getEnemies().add(new PodCharged(intensity));
         }
@@ -272,6 +281,7 @@ public class GameLogic {
         if (CMath.timeTrigger(cuFrame, 80, 90, 0.5)) {
             world.getEnemies().add(new UfoEnemy(intensity));
         }
+        // Second boss
         if (CMath.timeTrigger(cuFrame, 91)) {
             world.getEnemies().add(new DevilRay(intensity));
         }
