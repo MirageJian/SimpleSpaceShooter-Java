@@ -83,7 +83,8 @@ public class GameLogic {
     private void laserLogic(PlayerObject player, EnemyObject enemy) {
         if (player.laser.isOn) {
             float height = player.laser.getCentre().getY() - enemy.getCentre().getY();
-            if (Math.abs(enemy.getCentre().getX() - player.laser.getCentre().getX()) < enemy.getWidth() / 2f
+            float widthMax = Math.max(player.laser.getWidth(), enemy.getWidth());
+            if (Math.abs(enemy.getCentre().getX() - player.laser.getCentre().getX()) < widthMax / 2f
                     && height < player.laser.getHeight() && height > 0) {
                 // Set the contact object for laser
                 enemy.reduceHealth(player.laser.getDamage());
@@ -142,8 +143,11 @@ public class GameLogic {
             // Shield immune enemy's bullets
             if (player.isShield()) {
                 // Remove bullets
-                if (width < player.getWidth() / 1.5f && height < player.getHeight() / 1.5f)
+                if (width < player.getWidth() / 1.5f && height < player.getHeight() / 1.5f){
                     world.getEBulletList().remove(eb);
+                    // shield will lose time when damaged.
+                    player.damageShield();
+                }
             } else if (width < eb.getWidth() / 2f && height < eb.getHeight() / 2f) {
                 // Then die, if there is no shield. Dying state will not remove bullets
                 world.getEBulletList().remove(eb);
