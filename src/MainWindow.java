@@ -11,8 +11,10 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import gameObjects.PlayerObject;
 import settings.GlobalConst;
 import ui.Button;
+import ui.UIUpdater;
 import util.UnitTests;
 
 /*
@@ -59,7 +61,7 @@ public class MainWindow {
     private Clip startClip;
 
     public MainWindow() {
-        frame.setSize(GlobalConst.LAYOUT_WIDTH + 14, GlobalConst.LAYOUT_HEIGHT + 37);  // you can customise this later and adapt it to change on size.
+        frame.setSize(GlobalConst.LAYOUT_WIDTH + 214, GlobalConst.LAYOUT_HEIGHT + 37);  // you can customise this later and adapt it to change on size.
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);   //If exit // you can modify with your way of quitting , just is a template.
         frame.setResizable(false); // Not resizable
         frame.setLayout(null);
@@ -102,6 +104,52 @@ public class MainWindow {
         }
         frame.add(canvas);
         frame.setVisible(true);
+        // Set Info area and update callback
+        JLabel currentDifficulty = new JLabel("Game Difficulty");
+        JLabel survivalTime = new JLabel("Survival Time");
+        JLabel enemiesEliminated = new JLabel("Enemies Eliminated");
+        JLabel shieldTime= new JLabel("P1 Shield Time");
+        JLabel bulletLv= new JLabel("P1 Bullet Lv");
+        JLabel laserLv= new JLabel("P1 Laser Lv");
+
+        JLabel shieldTime2= new JLabel("P2 Shield Time");
+        JLabel bulletLv2= new JLabel("P2 Bullet Lv");
+        JLabel laserLv2= new JLabel("P2 Laser Lv");
+
+        currentDifficulty.setBounds(GlobalConst.LAYOUT_WIDTH + 20, 20, 200, 20);
+        survivalTime.setBounds(GlobalConst.LAYOUT_WIDTH + 20, 40, 200, 20);
+        enemiesEliminated.setBounds(GlobalConst.LAYOUT_WIDTH + 20, 60, 200, 20);
+        shieldTime.setBounds(GlobalConst.LAYOUT_WIDTH + 20, 200, 200, 20);
+        bulletLv.setBounds(GlobalConst.LAYOUT_WIDTH + 20, 220, 200, 20);
+        laserLv.setBounds(GlobalConst.LAYOUT_WIDTH + 20, 240, 200, 20);
+        shieldTime2.setBounds(GlobalConst.LAYOUT_WIDTH + 20, 300, 200, 20);
+        bulletLv2.setBounds(GlobalConst.LAYOUT_WIDTH + 20, 320, 200, 20);
+        laserLv2.setBounds(GlobalConst.LAYOUT_WIDTH + 20, 340, 200, 20);
+        frame.add(currentDifficulty);
+        frame.add(survivalTime);
+        frame.add(enemiesEliminated);
+        frame.add(shieldTime);
+        frame.add(bulletLv);
+        frame.add(laserLv);
+        frame.add(shieldTime2);
+        frame.add(bulletLv2);
+        frame.add(laserLv2);
+        gameWorld.setCallback((player, p2) -> {
+            currentDifficulty.setText("Game Difficulty: " + gameWorld.getIntensity());
+            survivalTime.setText("Survival Time: " + gameWorld.getSurvivalTime());
+            enemiesEliminated.setText("Enemies Eliminated: " + gameWorld.getEnemiesEliminatedNum());
+            if (player != null) {
+                shieldTime.setText("P1 Shield Time Remains: " + player.getShieldTime());
+                bulletLv.setText("P1 Bullet Lv: " + player.getBulletLv());
+                laserLv.setText("P1 Laser Lv: " + player.getLaserLv());
+            }
+            if (p2 != null) {
+                shieldTime2.setText("P1 Shield Time Remains: " + p2.getShieldTime());
+                bulletLv2.setText("P1 Bullet Lv: " + p2.getBulletLv());
+                laserLv2.setText("P1 Laser Lv: " + p2.getLaserLv());
+            }
+        });
+
     }
 
     //Basic Model-View-Controller pattern
@@ -157,7 +205,7 @@ public class MainWindow {
         startClip.setFramePosition(0);
         startClip.start();
     }
-
+    // Music relative methods
     private Clip playOrchestral() {
         // Sound of Start and End screen
         try {

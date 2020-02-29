@@ -8,8 +8,6 @@ Main source of this game: [Opengameart](http://opengameart.org)
 
 Space ship (player) and enemy [Link](https://opengameart.org/content/space-shooter-ships-and-sprites-from-the-game-frozen-moons)
 
-Background [Link](https://opengameart.org/content/grid-hud)
-
 Splash [Link1](https://opengameart.org/content/splash-effect-32x32) [Link2](https://opengameart.org/content/water-splash)
 
 Laser [Link](https://opengameart.org/content/laser-effect-sheet)
@@ -20,7 +18,9 @@ Numbers [Link](https://opengameart.org/content/numbers-collection)
 
 Explosion [Link](https://opengameart.org/content/explosion)
 
-Background [Link](https://opengameart.org/content/stars-parallax-backgrounds)
+Background [Link](https://opengameart.org/content/grid-hud)
+
+Background for start and in game [Link](https://opengameart.org/content/stars-parallax-backgrounds)
 
 [Pickups](https://opengameart.org/content/pickup-items-icons)
 
@@ -60,7 +60,7 @@ Engine fire, bullet direction.
 
 **Bullet hit effect**
 
-### Feature
+### Features
 
 **General**: Modify the whole structure, different class, abstract class for `GameObject` and `EnemyObject`.
 
@@ -77,6 +77,8 @@ Engine fire, bullet direction.
 **Health system**: Every enemy has health. There will die when heal go below 0.
 
 **Enemy fire**: Enemies have different bullet pattern, which will be changed as game time increases.
+
+**Heal bar for enemy**: Enemies have heal. They will take damage if laser or bullets hited.
 
 ### Integrity:
 
@@ -97,9 +99,3 @@ Engine fire, bullet direction.
 **Mouse Speed Limit**: For mouse control, there is speed limit.
 
 **Weapon System**: Player can use R or Right mouse button to change weapon.
-
-### Consideration Features
-
-Ability for laser and bullets.
-
-Make laser an ultimate skill, 5s cool down time.

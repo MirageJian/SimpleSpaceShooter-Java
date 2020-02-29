@@ -1,5 +1,6 @@
 package gameObjects;
 
+import settings.GlobalConst;
 import settings.WeaponTypes;
 import util.GameObject;
 import util.GameResource;
@@ -71,7 +72,7 @@ public class PlayerObject extends GameObject {
     }
 
     public void setShieldTime(int shieldTime) {
-        this.shieldTime = shieldTime;
+        this.shieldTime += shieldTime;
     }
 
     public void weakenShield() {
@@ -98,5 +99,15 @@ public class PlayerObject extends GameObject {
 
     public void minusDyingTime() {
         if (this.dyingTime > 0) dyingTime--;
+    }
+    // Info display
+    public int getShieldTime() {
+        return shieldTime / GlobalConst.TARGET_FRAME;
+    }
+    public int getBulletLv() {
+        return bulletLv;
+    }
+    public int getLaserLv() {
+        return laser.getLaserLv();
     }
 }

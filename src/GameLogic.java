@@ -2,12 +2,13 @@ import gameObjects.*;
 import gameObjects.enemy.*;
 import settings.WeaponTypes;
 import settings.GlobalConst;
+import ui.UIUpdater;
 import util.CMath;
 import util.Vector3f;
 
 public class GameLogic {
     private Model world;
-    private int frameCount = 0;
+    public int frameCount = 0;
 
     public GameLogic(Model world) {
         this.world = world;
@@ -40,6 +41,9 @@ public class GameLogic {
         frameCount += 1;
         // Survival to get score
         world.addScore();
+        // Update info every 0.5s
+        if (frameCount % 30 == 0 && world.getCallback() != null)
+            world.getCallback().updateUI(world.getPlayer(), world.getP2());
     }
 
     private void gameLogic() {
@@ -71,6 +75,8 @@ public class GameLogic {
                 // There is a possibility to generate pickup
                 if (CMath.lowChanceRandom())
                     world.getPickupList().add(PickupObject.createPickup(temp.getNewCentre()));
+                // Statistic
+                world.setEnemiesEliminatedNum();
             }
         }
     }
@@ -251,8 +257,11 @@ public class GameLogic {
     }
 
     private void gameProcess() {
-        int intensity = frameCount / CMath.getFrames(300) + 1;
-        int cuFrame = frameCount % CMath.getFrames(300);
+        // Intensity logic
+        world.setIntensity(frameCount / CMath.getFrames(180) + 1);
+        int intensity = world.getIntensity();
+        // Frames and times part
+        int cuFrame = frameCount % CMath.getFrames(180);
         if (CMath.timeTrigger(cuFrame, 0, 10, 1)) {
             world.getEnemies().add(new UfoEnemy(intensity));
         }

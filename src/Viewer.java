@@ -68,7 +68,7 @@ public class Viewer extends JPanel {
         // Back the transform up
         backupTransform = g2d.getTransform();
         //Draw background
-        drawBackground(g2d);
+        drawBackground(g2d, gameWorld.backgroundResource);
         // Laser part
         gameWorld.getPickupList().forEach(p -> drawPickups((int)p.getCentre().getX(), (int)p.getCentre().getY(), p, g2d));
         //Draw Bullets change back
@@ -93,6 +93,7 @@ public class Viewer extends JPanel {
 //        if (gameWorld.isGameEnd) drawEndScreen(g2d);
         // Score UI
         drawScore(g2d);
+        drawInfo(g2d);
     }
     private void rotate(Graphics2D g2d, GameObject gameObject, int x, int y) {
         AffineTransform tx = AffineTransform.getRotateInstance(gameObject.getRotation(), x, y);
@@ -114,16 +115,17 @@ public class Viewer extends JPanel {
                 0, 0, p.resource.drawWidth , p.resource.drawHeight, null);
     }
 
-    private void drawBackground(Graphics g) {
-        int currentPositionInAnimation = CurrentAnimationTime % 1919;
+    private void drawBackground(Graphics g, GameResource bg) {
+        int current = CurrentAnimationTime % (bg.drawHeight / 2);
+        g.drawImage(bg.imageTexture, 0, 0, GlobalConst.LAYOUT_WIDTH, GlobalConst.LAYOUT_HEIGHT,
+                0, (bg.drawHeight / 2) - current, bg.drawWidth, bg.drawHeight - current, null);
+        // Background effect
         GameResource bgEffect = gameWorld.bgEffectResource;
         int current2 = CurrentAnimationTime * 20 % bgEffect.drawHeight / 2;
-        // int current3 = CurrentAnimationTime * 50 % 1000;
-        g.drawImage(gameWorld.backgroundResource.imageTexture, 0, 0, GlobalConst.LAYOUT_WIDTH, GlobalConst.LAYOUT_HEIGHT,
-                0, 1919 - currentPositionInAnimation, 1080, 3838 - currentPositionInAnimation, null);
         g.drawImage(bgEffect.imageTexture, 0, 0, GlobalConst.LAYOUT_WIDTH, GlobalConst.LAYOUT_HEIGHT,
                 0, bgEffect.drawHeight / 2 - current2, bgEffect.drawWidth, bgEffect.drawHeight - current2, null);
-//        g.drawImage(gameWorld.bgEffectFResource.imageTexture, 0, 0, 1000, 1000, 0, 1000-current3, 1000, 2000-current3, null);
+        // int current3 = CurrentAnimationTime * 50 % 1000;
+        // g.drawImage(gameWorld.bgEffectFResource.imageTexture, 0, 0, 1000, 1000, 0, 1000-current3, 1000, 2000-current3, null);
     }
 
     private void drawBullet(int x, int y, BulletObject bullet, Graphics2D g) {
@@ -230,6 +232,14 @@ public class Viewer extends JPanel {
         double health = enemy.getHealthRatio() * (enemy.getWidth() - 4);
         g2d.fillRect(x + 2, y + 2, (int) health, 4);
         g2d.setColor(backup);
+    }
+
+    private void drawInfo(Graphics2D g2d) {
+        Color backup = g2d.getColor();
+        g2d.setColor(Color.BLACK);
+        g2d.fillRect(GlobalConst.LAYOUT_WIDTH, 0, 200, GlobalConst.LAYOUT_HEIGHT);
+        g2d.setColor(Color.WHITE);
+        g2d.drawLine(GlobalConst.LAYOUT_WIDTH, 0, GlobalConst.LAYOUT_WIDTH, GlobalConst.LAYOUT_HEIGHT);
     }
 }
 

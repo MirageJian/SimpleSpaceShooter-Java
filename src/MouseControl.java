@@ -3,8 +3,6 @@ import java.awt.event.MouseMotionListener;
 
 import java.awt.Point;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 /**
  * The Origin Source Code from
  * https://www.gamedev.net/tutorials/programming/general-and-gameplay-programming/java-games-keyboard-and-mouse-r2439/

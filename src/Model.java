@@ -6,6 +6,7 @@ import gameObjects.PickupObject;
 import gameObjects.enemy.EnemyObject;
 import gameObjects.PlayerObject;
 import settings.GlobalConst;
+import ui.UIUpdater;
 import util.*;
 
 /*
@@ -35,6 +36,8 @@ SOFTWARE.
 public class Model {
     private boolean isGameEnd;
     private int score;
+    // Game difficulty
+    private int intensity = 1;
     // Game Objects
     private PlayerObject player;
     private PlayerObject p2 = null; // Player 2
@@ -78,7 +81,7 @@ public class Model {
 
     public Model() {
         // Background
-        backgroundResource = new GameResource("res/BG_1080_3838.png", 3838, 1080, "sound/space.wav");
+        backgroundResource = new GameResource("res/BG_800_1600.png", 800, 1600, "sound/space.wav");
         bgEffectResource = new GameResource("res/BG_Effect_1000.png", 1000, 2000);
         //Player
         playerResource = new GameResource("res/player_750_160.png", 125, 160, "sound/player_explosion.wav");
@@ -97,6 +100,7 @@ public class Model {
         backgroundResource.loopSound();
         isGameEnd = false;
         score = 0;
+        enemiesEliminatedNum = 0;
         player = new PlayerObject(playerResource, 50, 50, new Point3f(GlobalConst.LAYOUT_WIDTH/2f, GlobalConst.LAYOUT_HEIGHT/2f, 0));
         EnemiesList = new CopyOnWriteArrayList<>();
         BulletList = new CopyOnWriteArrayList<>();
@@ -132,6 +136,12 @@ public class Model {
         score++;
     }
     int getScore() {return score;}
+    public int getIntensity() {
+        return intensity;
+    }
+    public void setIntensity(int intensity) {
+        this.intensity = intensity;
+    }
     public boolean isGameEnd() {
         return isGameEnd;
     }
@@ -149,6 +159,30 @@ public class Model {
     }
     public void setP2() {
         this.p2 = new PlayerObject(p2Res, 50, 56, new Point3f(GlobalConst.LAYOUT_WIDTH/3f, GlobalConst.LAYOUT_HEIGHT/2f, 0));
+    }
+
+    // Info updater
+    private UIUpdater callback;
+    private int enemiesEliminatedNum = 0;
+
+    public void setCallback(UIUpdater callback) {
+        this.callback = callback;
+    }
+    public UIUpdater getCallback() {
+        return callback;
+    }
+
+    public int getEnemiesEliminatedNum() {
+        return enemiesEliminatedNum;
+    }
+
+    public void setEnemiesEliminatedNum() {
+        this.enemiesEliminatedNum += 1;
+    }
+    public int getSurvivalTime() {
+        if (gameLogic != null)
+            return gameLogic.frameCount / GlobalConst.TARGET_FRAME;
+        return 0;
     }
 }
 

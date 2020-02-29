@@ -14,7 +14,7 @@ public class PodCharged extends EnemyObject {
     private int intensity;
 
     public PodCharged(int intensity) {
-        super(resource,127, 128, 5_000 * intensity, CMath.vectorByXYZ(0, -10, 0), 5_000, sDefaultCd);
+        super(resource,127, 128, 5_000 * intensity, CMath.vectorByXYZ(0, -4, 0), 5_000, sDefaultCd);
         setAngularV(Math.toRadians(30));
         this.intensity = intensity;
     }

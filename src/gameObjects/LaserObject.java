@@ -23,7 +23,7 @@ public class LaserObject extends GameObject {
 
         if (laserLv < MAX_LV) {
             laserLv++;
-            setWidth((int)(1.2 * getWidth()));
+            setWidth((int)(1.08 * getWidth()));
         }
     }
 
@@ -44,5 +44,9 @@ public class LaserObject extends GameObject {
                 setHeight(30);
             }});
         }
+    }
+
+    public int getLaserLv() {
+        return laserLv;
     }
 }
