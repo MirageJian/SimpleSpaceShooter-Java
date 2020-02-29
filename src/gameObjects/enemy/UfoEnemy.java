@@ -14,7 +14,7 @@ public class UfoEnemy extends EnemyObject {
     private int fireTimes;
 
     public UfoEnemy(int intensity) {
-        super(ufoResource, 50, 50, 100 * intensity, CMath.vectorByXYZ(0,-80,0), 1000, defaultCd);
+        super(ufoResource, 50, 50, 100 * intensity, CMath.vectorByXYZ(0,-80,0), 1000 * intensity, defaultCd);
         setAngularV(Math.toRadians(90));
         this.intensity = intensity;
         fireTimes = intensity;

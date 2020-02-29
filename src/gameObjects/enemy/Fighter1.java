@@ -14,7 +14,7 @@ public class Fighter1 extends EnemyObject {
     private int intensity;
 
     public Fighter1(int intensity) {
-        super(resource,66, 92, 1_000 * intensity, CMath.vectorByXYZ(0, -100, 0), 2000, sDefaultCd);
+        super(resource,66, 92, 1_000 * intensity, CMath.vectorByXYZ(0, -100, 0), 2000 * intensity, sDefaultCd);
         this.intensity = intensity;
         this.fireTimes = intensity;
     }

@@ -13,7 +13,7 @@ public class DevilRay extends EnemyObject {
     private int intensity;
 
     public DevilRay(int intensity) {
-        super(resource,162, 128, 50_000 * intensity, CMath.vectorByXYZ(-20, -10, 0), 100_000, sDefaultCd);
+        super(resource,162, 128, 50_000 * intensity, CMath.vectorByXYZ(-20, -10, 0), 100_000 * intensity, sDefaultCd);
 //        setAngularV(Math.toRadians(30));
         this.intensity = intensity;
     }
@@ -21,30 +21,32 @@ public class DevilRay extends EnemyObject {
     @Override
     public void fire(CopyOnWriteArrayList<BulletObject> EBulletList, PlayerObject player) {
         double angle = CMath.getAngle(this, player);
-        if (cd < 300 && (cd + 75) % 60 == 0) {
+        // Arc sector
+        if (cd < 300 && (cd + 75) % CMath.normalIntense(60, intensity) == 0) {
             for (int i = 1; i < 2; i ++) createBullets(EBulletList, angle, i, 2);
         }
-        if (cd < 600 && (cd + 60) % 120 == 0) {
+        if (cd < 600 && (cd + 60) % CMath.normalIntense(120, intensity) == 0) {
             EBulletList.add(new BulletObject(energyBallB, 20, 20, CMath.vectorByAngle(-150 * intensity, angle), this.getNewCentre())
                     .setRotation(BulletObject.class, Math.toRadians(-angle + 180)));
             for (int i = 1; i < 2; i ++) createBullets(EBulletList, angle, i, 0);
         }
-        if (cd < 1200 && (cd + 45) % 120 == 0) {
+        if (cd < 1200 && (cd + 45) % CMath.normalIntense(120, intensity) == 0) {
             for (int i = 1; i < 3; i ++) createBullets(EBulletList, angle, i, 2);
         }
-        if (cd < 1800 && (cd + 30) % 120 == 0) {
+        if (cd < 1800 && (cd + 30) % CMath.normalIntense(120, intensity) == 0) {
             EBulletList.add(new BulletObject(energyBallB, 20, 20, CMath.vectorByAngle(-150 * intensity, angle), this.getNewCentre())
                     .setRotation(BulletObject.class, Math.toRadians(-angle + 180)));
             for (int i = 1; i < 3; i ++) createBullets(EBulletList, angle, i, 0);
         }
-        if (cd < 2400 && (cd + 15) % 120 == 0) {
+        if (cd < 2400 && (cd + 15) % CMath.normalIntense(120, intensity) == 0) {
             for (int i = 1; i < 4; i ++) createBullets(EBulletList, angle, i, 2);
         }
-        if (cd < 3600 && cd % 120 == 0) {
+        if (cd < 3600 && cd % CMath.normalIntense(120, intensity) == 0) {
             EBulletList.add(new BulletObject(energyBallB, 20, 20, CMath.vectorByAngle(-150 * intensity, angle), this.getNewCentre())
                     .setRotation(BulletObject.class, Math.toRadians(-angle + 180)));
             for (int i = 1; i < 4; i ++) createBullets(EBulletList, angle, i, 0);
         }
+        // Line
         if (cd > 3600 && cd % 20 == 0) {
             EBulletList.add(new BulletObject(lBullet, 45, 15, CMath.vectorByAngle(-150 * intensity, angle), this.getNewCentre())
                     .setRotation(BulletObject.class, Math.toRadians(-angle + 180)));

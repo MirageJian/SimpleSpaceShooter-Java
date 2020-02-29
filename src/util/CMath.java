@@ -44,4 +44,8 @@ public class CMath {
     public static boolean lowChanceRandom() {
         return Math.random() * 10 > 6;
     }
+
+    public static int normalIntense(int num, int intensity) {
+        return (int) (num / (intensity * 0.1 + 0.9));
+    }
 }

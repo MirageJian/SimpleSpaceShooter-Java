@@ -261,39 +261,50 @@ public class GameLogic {
         int intensity = world.getIntensity();
         // Frames and times part
         int cuFrame = frameCount % CMath.getFrames(180);
+        // 1st raid
         if (CMath.timeTrigger(cuFrame, 0, 10, 1)) {
             world.getEnemies().add(new UfoEnemy(intensity));
         }
-        // First bosses
-        if (CMath.timeTrigger(cuFrame, 12)) {
+        if (CMath.timeTrigger(cuFrame, 10)) {
             world.getEnemies().add(new PodCharged(intensity));
         }
-        if (CMath.timeTrigger(cuFrame, 20, 30, 1)) {
+        if (CMath.timeTrigger(cuFrame, 10, 20, 1)) {
             world.getEnemies().add(new UfoEnemy(intensity));
+        }
+        if (CMath.timeTrigger(cuFrame, 20)) {
+            world.getEnemies().add(new PodCharged(intensity));
+        }
+        // 2nd raid
+        if (CMath.timeTrigger(cuFrame, 20, 30, 2)) {
+            world.getEnemies().add(new Fighter1(intensity));
         }
         if (CMath.timeTrigger(cuFrame, 30)) {
             world.getEnemies().add(new PodCharged(intensity));
         }
+        if (CMath.timeTrigger(cuFrame, 30, 40, 1)) {
+            world.getEnemies().add(new UfoEnemy(intensity));
+        }
         if (CMath.timeTrigger(cuFrame, 40)) {
             world.getEnemies().add(new PodCharged(intensity));
         }
-        if (CMath.timeTrigger(cuFrame, 35, 50, 1)) {
+        // 3rd raid
+        if (CMath.timeTrigger(cuFrame, 40, 60, 2)) {
             world.getEnemies().add(new UfoEnemy(intensity));
         }
         if (CMath.timeTrigger(cuFrame, 55)) {
             world.getEnemies().add(new PodCharged(intensity));
         }
-        if (CMath.timeTrigger(cuFrame, 60, 80, 2)) {
+        if (CMath.timeTrigger(cuFrame, 60, 80, 1)) {
             world.getEnemies().add(new Fighter1(intensity));
         }
         if (CMath.timeTrigger(cuFrame, 80, 90, 0.5)) {
             world.getEnemies().add(new UfoEnemy(intensity));
         }
         // Second boss
-        if (CMath.timeTrigger(cuFrame, 91)) {
+        if (CMath.timeTrigger(cuFrame, 90)) {
             world.getEnemies().add(new DevilRay(intensity));
         }
-        if (CMath.timeTrigger(cuFrame, 100, 120, 0.5)) {
+        if (CMath.timeTrigger(cuFrame, 90, 120, 1)) {
             world.getEnemies().add(new Drone(intensity));
         }
         // Final boss
@@ -301,11 +312,31 @@ public class GameLogic {
         if (CMath.timeTrigger(cuFrame, 120)) {
             world.getEnemies().add(mecha);
         }
+        if (CMath.timeTrigger(cuFrame, 120, 125, 0.5)) {
+            world.getEnemies().add(new Drone(intensity));
+        }
+        if (CMath.timeTrigger(cuFrame, 125, 130, 0.5)) {
+            world.getEnemies().add(new Fighter1(intensity));
+        }
         if (CMath.timeTrigger(cuFrame, 130, 150 , 2)) {
             mecha.createHammer(world.getEnemies());
         }
-        if (CMath.timeTrigger(cuFrame, 160)) {
+        if (CMath.timeTrigger(cuFrame, 150)) {
             mecha.create8Hammer(world.getEnemies());
         }
+        // Kinds of Enemies
+        if (CMath.timeTrigger(cuFrame, 150, 180 , 5)) {
+            mecha.createHammer(world.getEnemies());
+        }
+        if (CMath.timeTrigger(cuFrame, 150, 180, 4)) {
+            world.getEnemies().add(new Drone(intensity));
+        }
+        if (CMath.timeTrigger(cuFrame, 150, 180, 3)) {
+            world.getEnemies().add(new Fighter1(intensity));
+        }
+        if (CMath.timeTrigger(cuFrame, 150, 180, 2)) {
+            world.getEnemies().add(new UfoEnemy(intensity));
+        }
+
     }
 }

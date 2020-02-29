@@ -13,7 +13,7 @@ public class Hammer extends EnemyObject {
     private int intensity;
 
     public Hammer(int intensity) {
-        super(resource,95, 96, 1_000 * intensity, CMath.vectorByXYZ(0, -50, 0), 10_000, sDefaultCd);
+        super(resource,95, 96, 1_000 * intensity, CMath.vectorByXYZ(0, -50, 0), 10_000* intensity, sDefaultCd);
         this.intensity = intensity;
     }
 

@@ -14,7 +14,7 @@ public class Drone extends EnemyObject {
     private int fireTimes;
 
     public Drone(int intensity) {
-        super(resource,65, 67, 500 * intensity, CMath.vectorByXYZ(0, -200, 0), 3_000, defaultCd);
+        super(resource,65, 67, 500 * intensity, CMath.vectorByXYZ(0, -200, 0), 3_000* intensity, defaultCd);
         this.intensity = intensity;
         fireTimes = intensity;
     }

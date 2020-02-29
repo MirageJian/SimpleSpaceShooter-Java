@@ -11,7 +11,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class LaserObject extends GameObject {
     public boolean isOn = false;
     private int laserLv = 1;
-    private final static int MAX_LV = 16;
+    private final static int MAX_LV = 20;
 
     public LaserObject(GameResource gameResource, int width, int height, PlayerObject player) {
         super(gameResource, width, height, null);
@@ -20,7 +20,6 @@ public class LaserObject extends GameObject {
 
     // Weapon upgrade method
     public void laserUpgrade() {
-
         if (laserLv < MAX_LV) {
             laserLv++;
             setWidth((int)(1.08 * getWidth()));

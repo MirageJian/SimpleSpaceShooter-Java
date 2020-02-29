@@ -14,18 +14,20 @@ public class PodCharged extends EnemyObject {
     private int intensity;
 
     public PodCharged(int intensity) {
-        super(resource,127, 128, 5_000 * intensity, CMath.vectorByXYZ(0, -4, 0), 5_000, sDefaultCd);
+        super(resource,127, 128, 5_000 * intensity, CMath.vectorByXYZ(0, -8, 0), 5_000 * intensity, sDefaultCd);
         setAngularV(Math.toRadians(30));
         this.intensity = intensity;
     }
 
     @Override
     public void fire(CopyOnWriteArrayList<BulletObject> EBulletList, PlayerObject player) {
+        // Circle
         if (cd < 800 && cd > 0 && cd % 4 == 0) {
             if (bulletAngle == 0) bulletAngle = (int)CMath.getAngle(this, player);
             EBulletList.add(new BulletObject(energyBallY, 20, 20, CMath.vectorByAngle(-100 * intensity, bulletAngle), this.getNewCentre()));
-            bulletAngle += 20;
+            bulletAngle += CMath.normalIntense(20, intensity);
         }
+        // Single
         if (cd > 860 && cd % 90 == 0) {
             bulletAngle = (int)CMath.getAngle(this, player);
             EBulletList.add(new BulletObject(energyBallY, 20, 20, CMath.vectorByAngle(-100 * intensity, bulletAngle), this.getNewCentre()));

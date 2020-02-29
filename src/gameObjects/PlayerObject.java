@@ -13,7 +13,7 @@ public class PlayerObject extends GameObject {
     public WeaponTypes currentWeapon = WeaponTypes.Bullet;
     public int bulletClodDown = 0;
     private int bulletLv = 1;
-    private final static int MAX_LV = 16;
+    private final static int MAX_LV = 20;
     // Shield lasting time, Extra width with shield
     private int shieldTime = 0;
     public final static int S_EXTRA_WIDTH = 40;

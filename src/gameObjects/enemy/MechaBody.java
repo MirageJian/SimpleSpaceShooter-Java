@@ -16,7 +16,7 @@ public class MechaBody extends EnemyObject {
     private int intensity;
 
     public MechaBody(int intensity) {
-        super(resource,118, 160, 100_000 * intensity, CMath.vectorByXYZ(-10, -20, 0), 1_000_000, sDefaultCd);
+        super(resource,118, 160, 100_000 * intensity, CMath.vectorByXYZ(-10, -20, 0), 1_000_000 * intensity, sDefaultCd);
         this.intensity = intensity;
     }
 
@@ -38,7 +38,7 @@ public class MechaBody extends EnemyObject {
     }
 
     private void createCircle(CopyOnWriteArrayList<BulletObject> EBulletList, int cd) {
-        if (cd % 30 == 0)
+        if (cd % CMath.normalIntense(30, intensity) == 0)
             for (int i = 0; i < 360; i += 6) {
                 EBulletList.add(new BulletObject(energyBallR, 20, 20, CMath.vectorByAngle(-150 * intensity, i), this.getNewCentre()));
             }
@@ -66,7 +66,7 @@ public class MechaBody extends EnemyObject {
             for (int i = 0; i < 8; i++) {
                 EBulletList.add(new BulletObject(energyBall, 20, 20, CMath.vectorByAngle(-100 * intensity, 45 * i + bulletAngle), this.getNewCentre()));
             }
-            bulletAngle += 10;
+            bulletAngle += CMath.normalIntense(10, intensity);
         }
     }
 
