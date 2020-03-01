@@ -48,43 +48,59 @@ Main sources from [Opengameart](http://opengameart.org) as well
 
 ## Introduction
 
-This is very simple shooter game. It has 2 game modes, single and double player. More instruction in the first screen of Game.
+This is a shooting game. Player control a spaceship to kill enemies and gain high score. There is no end for this game until player was killed by enemies’ bullets. However, the difficulty will increase if player survival longer.
+
+It has 2 game modes, single and double player. There are two types of pickups, weapon upgrade package and shield. Spaceships have two types of weapons, bullets and laser. There also are 7 types of enemies in this game. They have different fire pattern and movement pattern.
+
+Laser can penetrate enemy deal with continues damage, and it has narrow width but long height. Bullets can deal damage when reach enemy ships, and they have wider fire range. Shield can withstand bullets, but shield time will reduce when it is hit by bullets.
+
+By the way, this game is based on a template. The code contains template information.
 
 ### Textures
 
-Changing background, and make it move. Make it look good and simulate flying
+Almost all textures in the template have been replaced.
 
-Scrolling background. Change almost all texture.
+**Background**: Change start background and make it scroll. There are meteor effects on the background.
 
-Engine fire, bullet direction.
+**Player**: Different player have different spaceship. Add engine fire effect with spirte.
 
-**Bullet hit effect**
+**Bullet, laser and their hit effect**: Add hit effects for bullet and laser. Bullet will blast when it deals damage. Laser can create small blue blast when dealing damage.
+
+**Explosion**: Add explosion effect. Enemy and player will explode when they die.
+
+**Shield**: Add shield texture.
+
+**Enemy**: Increase types of enemy. There can fire different color of bullets.
+
+**Sound**: Add background music, hit sound, explosion sound etc.
 
 ### Features
 
-**General**: Modify the whole structure, different class, abstract class for `GameObject` and `EnemyObject`.
+**General**: Modify the whole structure. For example, there are abstract classes for GameObject and EnemyObject, GameResouce to control resources such as image and sound, GlobalConst contains game basic config const like frame rate, CMath does some custom calculation, ui package etc. These thing make project have better expandability.
 
-**Upgrade expandability**: Global Const for game basic config, such as speed of object and frame rate. CMath library.
+**Optimization**: Game Resource is the object for Game Object. It stores the resource that loaded before user enter the game. Make game smoother than template.
 
-**Optimization**: Game Resource is the object for Game Object. It stores the resource that loaded before user enter the game. Make game more smooth than original one.
+**Bullets fire**: Fire cooldown time (10 frames). Fire angle can be increase by bullets lv. Bullets will remove after reach boundaries and add a blast effect.
 
-**Bullets fire**: Fire cooldown period. Fire angle is different. Bullets will remove after reach boundaries.
+**Laser and weapon changing**: Use “R” to change weapon between laser and bullet. Laser has penetration effect and deal damage continuously.
 
-**Pickup system**: there are 2 types of pickups. Pickups will not beyond the boundaries. Enemy died will generate pickup. When it reaches boundaries, it will rebound to opposite direction.
+**Pickups**: There are 2 types of pickups. When it reaches boundaries, it will bounce back to opposite direction. Dead enemy may generate a pickup.
 
-**Weapon upgrade system**: Bullet and laser has nineth level of weapon. Each level increase damage/numbers and appearance.
+**Shield**: When player pick a shield up, the shield time will increase 10s. It will reduce by time or enemy bullet.
 
-**Health system**: Every enemy has health. There will die when heal go below 0.
+**Weapon upgrade**: Weapon upgrade packages increases the level of current weapon and increase damage/numbers and appearance.
 
-**Enemy fire**: Enemies have different bullet pattern, which will be changed as game time increases.
+**Health for enemy**: Every enemy has health. There will die when heal go below 0. They will take damage if laser or bullets hit on their body. Heal bar is on the top of enemy.
 
-**Heal bar for enemy**: Enemies have heal. They will take damage if laser or bullets hited.
+**Enemy fire and movement**: Enemies have different bullet pattern, which will be changed as game time increases. Different enemy also has different movement pattern.
 
 ### Integrity:
 
 **Smoother Game**: It can reach 60 frames per second.
 
-**Score**: The score exists on the top right of screen
+**Score**: The score exists on the top right of screen.
+
+**Weapon level, shield time and other info**: On the right of game window.
 
 **Start and end**: Game has start and end, and it has restart screen.
 
